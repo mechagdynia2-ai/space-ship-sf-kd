@@ -2,6 +2,8 @@
 
 Browser 3D sci-fi arcade game built with Three.js, Vite and the Web Audio API.
 
+https://mechagdynia2-ai.github.io/space-ship-sf-kd/
+
 The project contains two playable modes:
 
 - **GAME** - classic space combat mode with levels, lasers, planets, rings, speed bonus, ring bonus, UZI, Machine Gun and Shield power-ups.
