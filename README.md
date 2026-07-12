@@ -15,8 +15,8 @@ The project contains two playable modes:
 - Fullscreen option where supported by the browser.
 - FPS counter in both modes.
 - Level progression up to level 999.
-- Local score fallback when the backend API is unavailable.
-- Optional Node.js score server for persistent leaderboard storage.
+- Cloudflare Worker + D1 leaderboard for shared scores.
+- Local score fallback when the leaderboard API is unavailable.
 
 ## Controls
 
@@ -72,19 +72,24 @@ Preview the production build:
 npm run preview
 ```
 
-## Score Server
+## Leaderboard
 
-The static GitHub Pages version can run the game, but GitHub Pages does not run `server.js`.
+The public GitHub Pages build uses a Cloudflare Worker API backed by D1:
 
-When `/api/scores` is not available, scores are saved locally in the browser via `localStorage`. This prevents save errors on static hosting, but it is not a shared global leaderboard.
+```text
+https://space-ship-sf-kd.mechagdynia2.workers.dev/api/scores
+```
 
-For a persistent leaderboard, run the included Node server:
+When the API is unavailable, scores are saved locally in the browser via `localStorage`. This prevents save errors, but local fallback scores are not shared between players.
+
+The repository still includes `server.js` as a local Node.js score server for development/testing:
+
 
 ```bash
 npm run server
 ```
 
-The server stores up to 100 best scores in `data/scores.json`.
+The local server stores up to 100 best scores in `data/scores.json`.
 
 ## GitHub Pages
 

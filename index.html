@@ -624,6 +624,7 @@
     ];
 
     class ScoreClient {
+      static apiBase = 'https://space-ship-sf-kd.mechagdynia2.workers.dev';
       static storageKey = 'space-ship-sf-kd-local-scores';
 
       static normalizeName(name) {
@@ -657,7 +658,7 @@
       static async list(limit = 100) {
         const safeLimit = Math.min(Math.max(Math.floor(limit), 1), 100);
         try {
-          const response = await fetch(`/api/scores?limit=${safeLimit}`, {
+          const response = await fetch(`${ScoreClient.apiBase}/api/scores?limit=${safeLimit}`, {
             headers: { 'Accept': 'application/json' }
           });
           if (!response.ok) throw new Error(`Leaderboard unavailable (${response.status})`);
@@ -677,7 +678,7 @@
           vehicle: String(entry.vehicle || '').slice(0, 40)
         };
         try {
-          const response = await fetch('/api/scores', {
+          const response = await fetch(`${ScoreClient.apiBase}/api/scores`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify(payload)
