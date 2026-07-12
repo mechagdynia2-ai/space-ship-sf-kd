@@ -1,0 +1,28 @@
+{
+  "name": "space-ship-sf-kd",
+  "version": "1.0.0",
+  "description": "Space Ship SF K.D. - browser 3D sci-fi arcade game with classic combat mode and Kamil Speed Test.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node server.js"
+  },
+  "keywords": [
+    "game",
+    "threejs",
+    "racing",
+    "sci-fi",
+    "webgl",
+    "github-pages"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0"
+  }
+}
