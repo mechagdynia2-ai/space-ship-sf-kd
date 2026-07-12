@@ -1,4 +1,4 @@
-# Space Ship SF K.D.
+# Space Ship SF K.D. 🚀
 
 Browser 3D sci-fi arcade game built with Three.js, Vite and the Web Audio API.
 
