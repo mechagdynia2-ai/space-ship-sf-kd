@@ -5,8 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Space Ship SF K.D.</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { overflow: hidden; background: #000; font-family: 'Courier New', monospace; color: #fff; user-select: none; }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html, body, canvas, button, #touch-controls, #touch-controls * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+    input, textarea, select {
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+      -webkit-touch-callout: default;
+    }
+    body {
+      overflow: hidden; background: #000; font-family: 'Courier New', monospace; color: #fff;
+      overscroll-behavior: none;
+      touch-action: manipulation;
+    }
+    body.touch-controls-on { touch-action: none; }
     #game-canvas { display: block; width: 100vw; height: 100vh; }
 
     /* ─── HUD Dashboard (Bottom Left) ─── */
@@ -257,6 +279,7 @@
     #touch-controls {
       position: fixed; inset: auto 0 0 0; z-index: 35; display: none; pointer-events: none;
       padding: 0 max(14px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+      -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
     }
     .touch-bank { display: flex; align-items: flex-end; justify-content: space-between; width: 100%; gap: 16px; }
     .touch-cluster { display: flex; align-items: flex-end; gap: 10px; pointer-events: auto; }
@@ -266,7 +289,7 @@
       background: rgba(0, 18, 36, 0.64); color: #fff; font-family: 'Courier New', monospace;
       font-size: clamp(20px, 5vh, 34px); font-weight: bold; text-align: center;
       box-shadow: 0 0 18px rgba(0, 200, 255, 0.18), inset 0 0 14px rgba(0, 180, 255, 0.1);
-      touch-action: none; user-select: none; -webkit-user-select: none;
+      touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
     }
     .touch-btn.small { width: clamp(52px, 10vh, 70px); height: clamp(52px, 10vh, 70px); font-size: clamp(11px, 2.6vh, 16px); letter-spacing: 1px; }
     .touch-btn.fire { border-color: rgba(255, 64, 120, 0.62); box-shadow: 0 0 18px rgba(255, 0, 80, 0.22), inset 0 0 14px rgba(255, 0, 80, 0.12); }
@@ -274,8 +297,8 @@
     .touch-btn:active, .touch-btn.active { transform: scale(0.95); background: rgba(0, 229, 255, 0.24); }
     #touch-esc { position: fixed; top: 10px; left: 92px; z-index: 38; display: none; width: 50px; height: 34px; border-radius: 8px; font-size: 11px; letter-spacing: 1px; pointer-events: auto; }
     .touch-cluster.multi-action { position: relative; width: clamp(190px, 40vh, 270px); height: clamp(82px, 16vh, 118px); align-items: stretch; }
-    .touch-combo-pad { position: absolute; inset: 0; border: 1px solid rgba(0,229,255,0.38); border-radius: 18px; background: rgba(0,18,36,0.54); box-shadow: 0 0 18px rgba(0,200,255,0.16), inset 0 0 18px rgba(0,180,255,0.08); touch-action: none; }
-    .touch-combo-label { position: absolute; pointer-events: none; color: rgba(255,255,255,0.9); font-weight: bold; text-align: center; text-shadow: 0 0 10px rgba(0,229,255,0.42); }
+    .touch-combo-pad { position: absolute; inset: 0; border: 1px solid rgba(0,229,255,0.38); border-radius: 18px; background: rgba(0,18,36,0.54); box-shadow: 0 0 18px rgba(0,200,255,0.16), inset 0 0 18px rgba(0,180,255,0.08); touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+    .touch-combo-label { position: absolute; pointer-events: none; color: rgba(255,255,255,0.9); font-weight: bold; text-align: center; text-shadow: 0 0 10px rgba(0,229,255,0.42); -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
     .touch-combo-label.nitro { top: 11px; left: 12px; font-size: clamp(10px, 2.4vh, 14px); color: #e8b7ff; }
     .touch-combo-label.fire { top: 50%; left: 13px; transform: translateY(-50%); font-size: clamp(18px, 4vh, 26px); color: #ff6688; }
     .touch-combo-label.gas { top: 50%; right: 16px; transform: translateY(-50%); font-size: clamp(16px, 3.7vh, 24px); color: #dffcff; }
@@ -3953,7 +3976,26 @@
       syncTouchVisibility();
     }
 
+    function blockGameTextSelection() {
+      const isEditable = target => !!target?.closest?.('input, textarea, select, [contenteditable="true"]');
+      const block = e => {
+        if (!isEditable(e.target)) e.preventDefault();
+      };
+      document.addEventListener('selectstart', block, { capture: true });
+      document.addEventListener('dragstart', block, { capture: true });
+      document.addEventListener('contextmenu', block, { capture: true });
+      document.addEventListener('copy', e => {
+        if (!isEditable(e.target) && document.body.classList.contains('touch-controls-on')) e.preventDefault();
+      }, { capture: true });
+      document.querySelectorAll('#touch-controls, #touch-controls *').forEach(el => {
+        el.setAttribute('draggable', 'false');
+        el.addEventListener('touchstart', block, { passive: false, capture: true });
+        el.addEventListener('touchmove', block, { passive: false, capture: true });
+      });
+    }
+
     const engine = new Engine();
+    blockGameTextSelection();
     bindTouchControls(engine);
     engine.start();
     bootStatus('Silnik gotowy. Menu startowe jest aktywne.');
