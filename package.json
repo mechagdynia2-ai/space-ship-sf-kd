@@ -4,7 +4,7 @@
   "description": "Space Ship SF K.D. - browser 3D sci-fi arcade game with classic combat mode and Kamil Speed Test.",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/copy-music.mjs",
     "preview": "vite preview",
     "server": "node server.js"
   },
