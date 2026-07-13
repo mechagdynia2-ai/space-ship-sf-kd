@@ -421,6 +421,12 @@
         <option value="Pixel Super Sweet">Pixel Super Sweet</option>
         <option value="Pixel Sweet">Pixel Sweet</option>
       </select>
+      <label for="game-difficulty-select">Game Level</label>
+      <select id="game-difficulty-select">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
     </div>
     <button class="menu-btn" id="btn-start">Start Game</button>
     <button class="menu-btn" id="btn-speedtest">🚀 Kamil Speed Test</button>
@@ -2441,8 +2447,9 @@
         return explosions;
       }
 
-      update(dt, speed, playerZ, speedMultiplier = 1, allowSpawn = true) {
-        this.spawnInterval = Math.max(0.2, 0.8 - speed/500);
+      update(dt, speed, playerZ, speedMultiplier = 1, allowSpawn = true, spawnRateMultiplier = 1) {
+        const spawnRate = Math.max(1, Number(spawnRateMultiplier) || 1);
+        this.spawnInterval = Math.max(0.2 / spawnRate, (0.8 - speed/500) / spawnRate);
         const oSpeed = (15 + speed*0.08) * speedMultiplier;
         this.spawnTimer -= dt;
         if (allowSpawn && this.spawnTimer <= 0) { this.spawn(); this.spawnTimer = this.spawnInterval; }
@@ -2633,6 +2640,7 @@
         this.onSpeedTest = () => {};
         this.onRes = () => {}; this.onFS = () => {};
         this.onMusicEnabled = () => {}; this.onMusicStyle = () => {};
+        this.onDifficulty = () => {};
         this._bind();
       }
       _bind() {
@@ -2661,6 +2669,10 @@
           c();
           this.onMusicStyle(e.target.value);
         });
+        document.getElementById('game-difficulty-select').addEventListener('change', e => {
+          c();
+          this.onDifficulty(e.target.value);
+        });
       }
       showMain() { this.state='main'; this.mainMenu.style.display='flex'; this.settings.style.display='none'; this.pause.style.display='none'; }
       showSettings() { this.state='settings'; this.mainMenu.style.display='none'; this.settings.style.display='flex'; this.pause.style.display='none'; }
@@ -2671,6 +2683,12 @@
     // ═══════════════════════════════════════════════
     // ENGINE (Main Game)
     // ═══════════════════════════════════════════════
+    const GAME_DIFFICULTY_CONFIGS = {
+      easy: { label: 'Easy', obstacleMultiplier: 1, powerupChanceMultiplier: 1 },
+      medium: { label: 'Medium', obstacleMultiplier: 2, powerupChanceMultiplier: 1 },
+      hard: { label: 'Hard', obstacleMultiplier: 3, powerupChanceMultiplier: 0.5 }
+    };
+
     class Engine {
       constructor() {
         // Scene
@@ -2686,6 +2704,8 @@
         this.isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
         this.maxPixelRatio = this.isTouchDevice ? 1 : 2;
         this.renderResolution = this.isTouchDevice ? 'mobile720' : 'window';
+        this.gameDifficulty = localStorage.getItem('space-ship-game-difficulty') || 'easy';
+        if (!GAME_DIFFICULTY_CONFIGS[this.gameDifficulty]) this.gameDifficulty = 'easy';
         this.renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('game-canvas'), antialias: !this.isTouchDevice, powerPreference: 'high-performance' });
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, this.maxPixelRatio));
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -2703,6 +2723,8 @@
         this.composer.addPass(this.bloomPass);
         this.resolutionSelect = document.getElementById('resolution-select');
         if (this.resolutionSelect) this.resolutionSelect.value = this.renderResolution;
+        this.difficultySelect = document.getElementById('game-difficulty-select');
+        if (this.difficultySelect) this.difficultySelect.value = this.gameDifficulty;
         this._applyRenderResolution();
 
         // Modules
@@ -3047,6 +3069,13 @@
         this.menu.onFS = (v) => { if (v==='on') this._tryFullscreen(false); else this._exitFullscreen(); };
         this.menu.onMusicEnabled = (enabled) => this.sound.setMusicEnabled(enabled);
         this.menu.onMusicStyle = (style) => this.sound.setMusicStyle(style);
+        this.menu.onDifficulty = (value) => this.setGameDifficulty(value);
+      }
+
+      setGameDifficulty(value) {
+        this.gameDifficulty = GAME_DIFFICULTY_CONFIGS[value] ? value : 'easy';
+        localStorage.setItem('space-ship-game-difficulty', this.gameDifficulty);
+        if (this.difficultySelect) this.difficultySelect.value = this.gameDifficulty;
       }
 
       _getRenderSize() {
@@ -3457,11 +3486,12 @@
       _maybeSpawnClassicPowerup(kind, pos) {
         if (this.speedTestMode || kind === 'planet') return;
         const level = this.hud.level;
+        const difficulty = GAME_DIFFICULTY_CONFIGS[this.gameDifficulty] || GAME_DIFFICULTY_CONFIGS.easy;
         const candidates = [];
         if (level % 10 === 0 && this.machineGunSpawnedForLevel !== level) candidates.push('machinegun');
         if (level % 3 === 0 && this.uziSpawnedForLevel !== level) candidates.push('uzi');
         if (level % 7 === 0 && this.shieldSpawnedForLevel !== level) candidates.push('shield');
-        if (!candidates.length || Math.random() > 0.45) return;
+        if (!candidates.length || Math.random() > 0.45 * difficulty.powerupChanceMultiplier) return;
         const type = candidates[Math.floor(Math.random() * candidates.length)];
         this._spawnClassicPowerup(type, pos);
         if (type === 'machinegun') this.machineGunSpawnedForLevel = level;
@@ -4279,8 +4309,9 @@
         this.updateNitro(dt);
         this._updateSpeedScoreBonus();
         const speedMult = this.hud.speedMultiplier;
+        const difficulty = GAME_DIFFICULTY_CONFIGS[this.gameDifficulty] || GAME_DIFFICULTY_CONFIGS.easy;
         this._updateClassicPlanets(dt);
-        this.obstacles.update(dt, this.player.speed, this.player.mesh.position.z, speedMult);
+        this.obstacles.update(dt, this.player.speed, this.player.mesh.position.z, speedMult, true, difficulty.obstacleMultiplier);
         this._updateClassicRings(dt, speedMult);
         this.obstacles.checkCollisions();
         this.checkPlayerCollisions();
