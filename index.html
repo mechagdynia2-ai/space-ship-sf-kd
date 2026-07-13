@@ -182,13 +182,15 @@
       z-index: 115; overflow-y: auto; padding: 30px 20px;
     }
     #ship-selection h2 { font-size: 36px; color: #fff; text-shadow: 0 0 20px rgba(255,0,255,0.6); letter-spacing: 6px; margin-bottom: 10px; }
-    #route-selector { display: grid; grid-template-columns: repeat(5, minmax(112px, 1fr)); gap: 10px; width: min(840px, 100%); margin: 8px 0 18px; }
+    .selection-label { font-size: 11px; color: rgba(255,200,0,0.68); letter-spacing: 3px; margin: 10px 0 4px; text-transform: uppercase; }
+    .option-selector { display: grid; grid-template-columns: repeat(5, minmax(112px, 1fr)); gap: 10px; width: min(960px, 100%); margin: 8px 0 14px; }
     .route-btn {
       padding: 10px 8px; font-family: 'Courier New', monospace; font-size: 12px; font-weight: bold;
       letter-spacing: 2px; color: rgba(255,255,255,0.72); text-transform: uppercase;
       background: rgba(0,14,32,0.72); border: 1px solid rgba(0,229,255,0.22); border-radius: 8px;
       cursor: pointer; transition: all 0.15s ease-out;
     }
+    .route-btn.long { font-size: 10px; line-height: 1.35; letter-spacing: 1px; }
     .route-btn:hover, .route-btn.active { color: #fff; border-color: rgba(0,229,255,0.82); box-shadow: 0 0 18px rgba(0,229,255,0.2); background: rgba(20,40,80,0.8); }
     #ship-selection .cat-label { font-size: 14px; color: rgba(0,229,255,0.6); letter-spacing: 4px; margin: 20px 0 10px; text-transform: uppercase; width: 100%; text-align: center; }
     #ship-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; width: 100%; max-width: 1400px; margin-bottom: 20px; }
@@ -459,13 +461,22 @@
   <!-- Ship Selection Grid -->
   <div id="ship-selection">
     <h2>KAMIL SPEED TEST</h2>
-    <div class="subtitle" style="font-size:13px;color:rgba(0,229,255,0.5);letter-spacing:4px;margin-bottom:10px;">SELECT ROUTE AND VEHICLE</div>
-    <div id="route-selector">
+    <div class="subtitle" style="font-size:13px;color:rgba(0,229,255,0.5);letter-spacing:4px;margin-bottom:10px;">SELECT ROUTE, TUNNEL AND VEHICLE</div>
+    <div class="selection-label">Route / World</div>
+    <div id="route-selector" class="option-selector">
       <button class="route-btn active" data-route="random">Random</button>
       <button class="route-btn" data-route="basic">Basic</button>
       <button class="route-btn" data-route="forest">Forest</button>
       <button class="route-btn" data-route="mountains">Mountains</button>
       <button class="route-btn" data-route="city">City</button>
+    </div>
+    <div class="selection-label">Tunnel Project</div>
+    <div id="tunnel-selector" class="option-selector">
+      <button class="route-btn active" data-tunnel="random">Random</button>
+      <button class="route-btn" data-tunnel="basic">Basic</button>
+      <button class="route-btn long" data-tunnel="blue-square">Blue Squer<br>Kamil D. Project</button>
+      <button class="route-btn long" data-tunnel="black-square">Black Squer<br>Kamil D. Project</button>
+      <button class="route-btn long" data-tunnel="neon-square">Neon Squer<br>Kamil D. Project</button>
     </div>
     <div id="ship-grid"></div>
     <button class="menu-btn" id="btn-speedtest-back">Back</button>
@@ -794,6 +805,7 @@
         this.grid = document.getElementById('ship-grid');
         this.selectedId = null;
         this.selectedRoute = 'random';
+        this.selectedTunnel = 'random';
         this._bind();
       }
 
@@ -807,6 +819,14 @@
             this.sound.playClick();
             this.selectedRoute = btn.dataset.route || 'random';
             document.querySelectorAll('#route-selector .route-btn').forEach(routeBtn => routeBtn.classList.toggle('active', routeBtn === btn));
+          });
+        });
+        document.querySelectorAll('#tunnel-selector .route-btn').forEach(btn => {
+          btn.addEventListener('mouseenter', () => this.sound.playHover());
+          btn.addEventListener('click', () => {
+            this.sound.playClick();
+            this.selectedTunnel = btn.dataset.tunnel || 'random';
+            document.querySelectorAll('#tunnel-selector .route-btn').forEach(tunnelBtn => tunnelBtn.classList.toggle('active', tunnelBtn === btn));
           });
         });
       }
@@ -858,8 +878,10 @@
       hide() { this.panel.style.display = 'none'; }
       onSelect(vehicle) {
         const routes = ['basic', 'forest', 'mountains', 'city'];
+        const tunnels = ['basic', 'blue-square', 'black-square', 'neon-square'];
         const route = this.selectedRoute === 'random' ? routes[Math.floor(Math.random() * routes.length)] : this.selectedRoute;
-        this.onSelectCallback(vehicle, route);
+        const tunnel = this.selectedTunnel === 'random' ? tunnels[Math.floor(Math.random() * tunnels.length)] : this.selectedTunnel;
+        this.onSelectCallback(vehicle, route, tunnel);
       }
       setOnSelect(fn) { this.onSelectCallback = fn; }
       setOnBack(fn) { this.onBackCallback = fn; }
@@ -868,11 +890,19 @@
     // ═══════════════════════════════════════════════
     // VELOCITY TUNNEL ENVIRONMENT
     // ═══════════════════════════════════════════════
+    const TUNNEL_STYLE_LABELS = {
+      basic: 'BASIC',
+      'blue-square': 'BLUE SQUER',
+      'black-square': 'BLACK SQUER',
+      'neon-square': 'NEON SQUER'
+    };
+
     class TunnelEnvironment {
-      constructor(scene, theme = 'basic', quality = 'high') {
+      constructor(scene, theme = 'basic', quality = 'high', tunnelStyle = 'basic') {
         this.scene = scene;
         this.theme = theme;
         this.quality = quality;
+        this.tunnelStyle = ['basic', 'blue-square', 'black-square', 'neon-square'].includes(tunnelStyle) ? tunnelStyle : 'basic';
         this.lowQuality = quality !== 'high';
         this.tunnelSegments = [];
         this.blackSquares = [];
@@ -888,6 +918,51 @@
         this.cityIsNight = Math.random() < 0.55;
         this.sceneryAnimFrame = 0;
         this.onRingCollected = () => {};
+      }
+
+      getTunnelStyleConfig() {
+        const configs = {
+          basic: { accent: 0x00e5ff, topAccent: 0xff00ff, panel: 0x000000, panelOpacity: 0.0, floor: this.theme === 'basic' ? 0x07091f : 0x101426 },
+          'blue-square': { accent: 0x009dff, topAccent: 0x00d5ff, panel: 0x000510, panelOpacity: 0.54, floor: 0x071225 },
+          'black-square': { accent: 0x2c3446, topAccent: 0x3a4358, panel: 0x000000, panelOpacity: 0.64, floor: 0x05070d },
+          'neon-square': { accent: 0xff35ff, topAccent: 0xb35cff, panel: 0x120018, panelOpacity: 0.58, floor: 0x11061c }
+        };
+        return configs[this.tunnelStyle] || configs.basic;
+      }
+
+      addTunnelStylePanels(group, segLen) {
+        if (this.tunnelStyle === 'basic') return;
+        const config = this.getTunnelStyleConfig();
+        const panelMat = new THREE.MeshBasicMaterial({
+          color: config.panel,
+          transparent: true,
+          opacity: config.panelOpacity,
+          side: THREE.DoubleSide,
+          depthWrite: false
+        });
+        const zSlots = this.lowQuality ? [-segLen * 0.28, segLen * 0.28] : [-segLen * 0.34, 0, segLen * 0.34];
+        const sideHeights = this.lowQuality ? [2.15] : [1.15, 3.05];
+        const ceilingXs = this.lowQuality ? [-2.8, 2.8] : [-3.6, 0, 3.6];
+        const panelZ = Math.min(2.9, segLen * 0.34);
+
+        const makePanel = (geo, x, y, z, rotX, rotY) => {
+          const panel = new THREE.Mesh(geo, panelMat.clone());
+          panel.position.set(x, y, z);
+          panel.rotation.set(rotX, rotY, 0);
+          panel.userData.baseOpacity = config.panelOpacity;
+          group.add(panel);
+        };
+
+        const sideGeo = new THREE.PlaneGeometry(panelZ, 0.82);
+        for (const z of zSlots) {
+          for (const y of sideHeights) {
+            makePanel(sideGeo, -5.94, y, z, 0, Math.PI / 2);
+            makePanel(sideGeo, 5.94, y, z, 0, -Math.PI / 2);
+          }
+          for (const x of ceilingXs) {
+            makePanel(new THREE.PlaneGeometry(1.25, panelZ), x, 4.94, z, -Math.PI / 2, 0);
+          }
+        }
       }
 
       pickNextDrift() {
@@ -1197,6 +1272,8 @@
       buildTunnel(length = 300, segments = 30) {
         this.clear();
         this.pickNextDrift();
+        const styleConfig = this.getTunnelStyleConfig();
+        const hasSquareTunnel = this.tunnelStyle !== 'basic';
         const segLen = length / segments;
         for (let i = 0; i < segments; i++) {
           const z = -i * segLen;
@@ -1211,7 +1288,7 @@
             uniforms: {
               uTime: { value: 0 }, uSpeed: { value: 0 },
               uColor: { value: new THREE.Color(0x0a0a2e) },
-              uAccent: { value: new THREE.Color(0x00e5ff) },
+              uAccent: { value: new THREE.Color(styleConfig.accent) },
               uIsBlackSquare: { value: 0.0 }
             },
             vertexShader: tunnelVS, fragmentShader: tunnelFS,
@@ -1233,8 +1310,8 @@
           // Ceiling
           const ceil = new THREE.Mesh(new THREE.PlaneGeometry(12, segLen), wallMat.clone());
           ceil.position.set(0, 5, 0); ceil.rotation.x = -Math.PI / 2;
-          if (this.theme !== 'basic') {
-            ceil.material.uniforms.uAccent.value = new THREE.Color(0x00e5ff);
+          if (this.theme !== 'basic' || hasSquareTunnel) {
+            ceil.material.uniforms.uAccent.value = new THREE.Color(styleConfig.topAccent);
             ceil.material.uniforms.uIsBlackSquare.value = 1.0;
           } else {
             ceil.material.uniforms.uAccent.value = new THREE.Color(0xff00ff);
@@ -1242,17 +1319,18 @@
           group.add(ceil);
 
           // Floor
-          const floorColor = this.theme === 'basic' ? 0x07091f : 0x101426;
           const floor = new THREE.Mesh(
             new THREE.PlaneGeometry(12, segLen),
-            new THREE.MeshBasicMaterial({ color: floorColor, side: THREE.DoubleSide })
+            new THREE.MeshBasicMaterial({ color: styleConfig.floor, side: THREE.DoubleSide })
           );
           floor.position.set(0, -1, 0); floor.rotation.x = Math.PI / 2;
           group.add(floor);
 
+          this.addTunnelStylePanels(group, segLen);
+
           // Neon edge strips
           const stripGeo = new THREE.BoxGeometry(0.05, 0.05, segLen);
-          const stripMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff });
+          const stripMat = new THREE.MeshBasicMaterial({ color: styleConfig.accent });
           [[-6, 0], [6, 0], [-6, 4], [6, 4]].forEach(([x, y]) => {
             const s = new THREE.Mesh(stripGeo, stripMat);
             s.position.set(x, y, 0);
@@ -2309,6 +2387,7 @@
         this.speedTestMode = false;
         this.speedTestVehicle = null;
         this.speedTestRoute = 'basic';
+        this.speedTestTunnelStyle = 'basic';
         this.speedTestScore = 0;
         this.speedTestDistance = 0;
         this.speedTestLane = 1; // 0=left, 1=center, 2=right
@@ -2626,7 +2705,7 @@
         this.menu.onResume = () => this.resumeGame();
         this.menu.onQuit = () => this.quitToMenu();
         this.menu.onSpeedTest = () => { this._hideTransientScreens(); this.menu.hideAll(); this.shipSelection.show(); };
-        this.shipSelection.setOnSelect((v, route) => { this.shipSelection.hide(); this.startSpeedTest(v, route); });
+        this.shipSelection.setOnSelect((v, route, tunnelStyle) => { this.shipSelection.hide(); this.startSpeedTest(v, route, tunnelStyle); });
         this.shipSelection.setOnBack(() => this.menu.showMain());
         this.menu.onRes = (v) => {
           this.renderResolution = v || 'window';
@@ -3204,7 +3283,8 @@
         document.body.classList.remove('speedtest-light');
       }
       _updateSpeedTestHUD() {
-        document.getElementById('speedtest-shipname').textContent = `${this.speedTestVehicle.name} / ${this.speedTestRoute}`;
+        const tunnelLabel = TUNNEL_STYLE_LABELS[this.speedTestTunnelStyle] || 'BASIC';
+        document.getElementById('speedtest-shipname').textContent = `${this.speedTestVehicle.name} / ${this.speedTestRoute} / ${tunnelLabel}`;
         document.getElementById('speedtest-speed').textContent = Math.round(this.player.speed);
         document.getElementById('speedtest-distance').textContent = `DISTANCE: ${Math.round(this.speedTestDistance)}m`;
         document.getElementById('speedtest-score').textContent = `SCORE: ${this.speedTestScore}`;
@@ -3359,12 +3439,13 @@
         this.speedTestGhost = null;
       }
 
-      startSpeedTest(vehicle, route = 'basic') {
+      startSpeedTest(vehicle, route = 'basic', tunnelStyle = 'basic') {
         this._tryFullscreen();
         this._hideTransientScreens();
         this.speedTestMode = true;
         this.speedTestVehicle = vehicle;
         this.speedTestRoute = ['basic', 'forest', 'mountains', 'city'].includes(route) ? route : 'basic';
+        this.speedTestTunnelStyle = ['basic', 'blue-square', 'black-square', 'neon-square'].includes(tunnelStyle) ? tunnelStyle : 'basic';
         this.speedTestScore = 0;
         this.speedTestDistance = 0;
         this.speedTestLane = 1;
@@ -3392,7 +3473,7 @@
 
         // Build tunnel
         const tunnelQuality = this.isTouchDevice || this.renderResolution === 'mobile720' ? 'mobile' : 'high';
-        this.tunnel = new TunnelEnvironment(this.scene, this.speedTestRoute, tunnelQuality);
+        this.tunnel = new TunnelEnvironment(this.scene, this.speedTestRoute, tunnelQuality, this.speedTestTunnelStyle);
         document.body.classList.toggle(
           'speedtest-light',
           this.speedTestRoute === 'forest' || this.speedTestRoute === 'mountains' || (this.speedTestRoute === 'city' && !this.tunnel.cityIsNight)
