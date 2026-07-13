@@ -193,6 +193,18 @@
     .route-btn.long { font-size: 10px; line-height: 1.35; letter-spacing: 1px; }
     .route-btn.compact { min-height: 48px; font-size: 9px; line-height: 1.25; letter-spacing: 1px; }
     .route-btn:hover, .route-btn.active { color: #fff; border-color: rgba(0,229,255,0.82); box-shadow: 0 0 18px rgba(0,229,255,0.2); background: rgba(20,40,80,0.8); }
+    #tunnel-editor {
+      display: none; width: min(960px, 100%); margin: 0 0 16px;
+      grid-template-columns: repeat(2, minmax(260px, 1fr)); gap: 12px;
+      padding: 12px; border: 1px solid rgba(255,0,255,0.24); border-radius: 8px;
+      background: rgba(8, 6, 22, 0.74); box-shadow: inset 0 0 18px rgba(120, 0, 255, 0.08);
+    }
+    #tunnel-editor.active { display: grid; }
+    .editor-side { display: grid; gap: 10px; }
+    .editor-control { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
+    .editor-control label { font-size: 10px; color: rgba(0,229,255,0.68); letter-spacing: 2px; text-transform: uppercase; }
+    .editor-control span { min-width: 92px; text-align: right; font-size: 10px; color: rgba(255,200,0,0.82); letter-spacing: 1px; text-transform: uppercase; }
+    .editor-control input[type="range"] { grid-column: 1 / -1; width: 100%; accent-color: #b35cff; }
     #ship-selection .cat-label { font-size: 14px; color: rgba(0,229,255,0.6); letter-spacing: 4px; margin: 20px 0 10px; text-transform: uppercase; width: 100%; text-align: center; }
     #ship-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; width: 100%; max-width: 1400px; margin-bottom: 20px; }
     .ship-card {
@@ -478,18 +490,50 @@
       <button class="route-btn long" data-tunnel="blue-square">Blue Squer<br>Kamil D. Project</button>
       <button class="route-btn long" data-tunnel="black-square">Black Squer<br>Kamil D. Project</button>
       <button class="route-btn long" data-tunnel="neon-square">Neon Squer<br>Kamil D. Project</button>
-      <button class="route-btn compact" data-tunnel="large-rect-blue">Large Rect<br>Blue</button>
-      <button class="route-btn compact" data-tunnel="large-rect-black">Large Rect<br>Black</button>
-      <button class="route-btn compact" data-tunnel="large-rect-white">Large Rect<br>Neon White</button>
-      <button class="route-btn compact" data-tunnel="large-rect-violet">Large Rect<br>Neon Violet</button>
-      <button class="route-btn compact" data-tunnel="circle-blue">Circle<br>Blue</button>
-      <button class="route-btn compact" data-tunnel="circle-black">Circle<br>Black</button>
-      <button class="route-btn compact" data-tunnel="circle-white">Circle<br>Neon White</button>
-      <button class="route-btn compact" data-tunnel="circle-violet">Circle<br>Neon Violet</button>
-      <button class="route-btn compact" data-tunnel="block-blue">Square<br>Blue</button>
-      <button class="route-btn compact" data-tunnel="block-black">Square<br>Black</button>
-      <button class="route-btn compact" data-tunnel="block-white">Square<br>Neon White</button>
-      <button class="route-btn compact" data-tunnel="block-violet">Square<br>Neon Violet</button>
+      <button class="route-btn compact" data-tunnel="large-rect-blue">Large Rect Blue<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="large-rect-black">Large Rect Black<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="large-rect-white">Large Rect White<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="large-rect-violet">Large Rect Violet<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="circle-blue">Circle Blue<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="circle-black">Circle Black<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="circle-white">Circle White<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="circle-violet">Circle Violet<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="block-blue">Square Blue<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="block-black">Square Black<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="block-white">Square White<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="block-violet">Square Violet<br>Kamil D. Project</button>
+      <button class="route-btn long" data-tunnel="editor">Tunnel Editor<br>Kamil D. Project</button>
+    </div>
+    <div id="tunnel-editor">
+      <div class="editor-side">
+        <div class="editor-control">
+          <label for="editor-figure">Choose your figure</label>
+          <span id="editor-figure-value">Circle</span>
+          <input id="editor-figure" type="range" min="1" max="20" step="1" value="1">
+        </div>
+        <div class="editor-control">
+          <label for="editor-size">Figure size</label>
+          <span id="editor-size-value">2x</span>
+          <input id="editor-size" type="range" min="1" max="10" step="1" value="2">
+        </div>
+      </div>
+      <div class="editor-side">
+        <div class="editor-control">
+          <label for="editor-shape-x">Shape X</label>
+          <span id="editor-shape-x-value">1x</span>
+          <input id="editor-shape-x" type="range" min="1" max="10" step="1" value="1">
+        </div>
+        <div class="editor-control">
+          <label for="editor-shape-y">Shape Y</label>
+          <span id="editor-shape-y-value">1x</span>
+          <input id="editor-shape-y" type="range" min="1" max="10" step="1" value="1">
+        </div>
+        <div class="editor-control">
+          <label for="editor-opacity">Figure opacity</label>
+          <span id="editor-opacity-value">1x</span>
+          <input id="editor-opacity" type="range" min="1" max="10" step="1" value="1">
+        </div>
+      </div>
     </div>
     <div id="ship-grid"></div>
     <button class="menu-btn" id="btn-speedtest-back">Back</button>
@@ -819,6 +863,8 @@
         this.selectedId = null;
         this.selectedRoute = 'random';
         this.selectedTunnel = 'random';
+        this.editorOptions = { figure: 1, size: 2, shapeX: 1, shapeY: 1, opacity: 1 };
+        this.editorPanel = document.getElementById('tunnel-editor');
         this._bind();
       }
 
@@ -840,8 +886,42 @@
             this.sound.playClick();
             this.selectedTunnel = btn.dataset.tunnel || 'random';
             document.querySelectorAll('#tunnel-selector .route-btn').forEach(tunnelBtn => tunnelBtn.classList.toggle('active', tunnelBtn === btn));
+            this.updateEditorPanel();
           });
         });
+        this.bindEditorControls();
+      }
+
+      bindEditorControls() {
+        const controls = [
+          ['figure', 'editor-figure', value => TUNNEL_EDITOR_FIGURES[Math.max(0, Math.min(TUNNEL_EDITOR_FIGURES.length - 1, value - 1))].label],
+          ['size', 'editor-size', value => `${value}x`],
+          ['shapeX', 'editor-shape-x', value => `${value}x`],
+          ['shapeY', 'editor-shape-y', value => `${value}x`],
+          ['opacity', 'editor-opacity', value => `${value}x`]
+        ];
+        controls.forEach(([key, id, format]) => {
+          const input = document.getElementById(id);
+          const valueEl = document.getElementById(`${id}-value`);
+          if (!input) return;
+          const sync = () => {
+            const max = key === 'figure' ? 20 : 10;
+            const value = Math.max(1, Math.min(max, Math.floor(Number(input.value) || 1)));
+            this.editorOptions[key] = value;
+            if (valueEl) valueEl.textContent = format(this.editorOptions[key]);
+          };
+          input.addEventListener('input', sync);
+          input.addEventListener('change', () => this.sound.playClick());
+          sync();
+        });
+      }
+
+      updateEditorPanel() {
+        if (this.editorPanel) this.editorPanel.classList.toggle('active', this.selectedTunnel === 'editor');
+      }
+
+      getEditorOptions() {
+        return { ...this.editorOptions };
       }
 
       show() {
@@ -885,16 +965,18 @@
         }
 
         this.panel.style.display = 'flex';
+        this.updateEditorPanel();
         this.panel.scrollTop = 0;
       }
 
       hide() { this.panel.style.display = 'none'; }
       onSelect(vehicle) {
         const routes = ['basic', 'forest', 'mountains', 'city'];
-        const tunnels = TUNNEL_STYLE_IDS;
+        const tunnels = TUNNEL_RANDOM_STYLE_IDS;
         const route = this.selectedRoute === 'random' ? routes[Math.floor(Math.random() * routes.length)] : this.selectedRoute;
         const tunnel = this.selectedTunnel === 'random' ? tunnels[Math.floor(Math.random() * tunnels.length)] : this.selectedTunnel;
-        this.onSelectCallback(vehicle, route, tunnel);
+        const tunnelOptions = tunnel === 'editor' ? this.getEditorOptions() : null;
+        this.onSelectCallback(vehicle, route, tunnel, tunnelOptions);
       }
       setOnSelect(fn) { this.onSelectCallback = fn; }
       setOnBack(fn) { this.onBackCallback = fn; }
@@ -903,33 +985,59 @@
     // ═══════════════════════════════════════════════
     // VELOCITY TUNNEL ENVIRONMENT
     // ═══════════════════════════════════════════════
+    const TUNNEL_EDITOR_FIGURES = [
+      { id: 'circle', label: 'Circle' },
+      { id: 'square', label: 'Square' },
+      { id: 'rect', label: 'Rectangle' },
+      { id: 'triangle', label: 'Triangle' },
+      { id: 'diamond', label: 'Diamond' },
+      { id: 'pentagon', label: 'Pentagon' },
+      { id: 'hexagon', label: 'Hexagon' },
+      { id: 'octagon', label: 'Octagon' },
+      { id: 'star', label: 'Star' },
+      { id: 'cross', label: 'Cross' },
+      { id: 'plus', label: 'Plus' },
+      { id: 'ring', label: 'Ring' },
+      { id: 'bar', label: 'Bar' },
+      { id: 'capsule', label: 'Capsule' },
+      { id: 'chevron', label: 'Chevron' },
+      { id: 'arrow', label: 'Arrow' },
+      { id: 'trapezoid', label: 'Trapezoid' },
+      { id: 'parallelogram', label: 'Parallelogram' },
+      { id: 'hourglass', label: 'Hourglass' },
+      { id: 'burst', label: 'Burst' }
+    ];
+
     const TUNNEL_STYLE_CONFIGS = {
       basic: { label: 'BASIC', accent: 0x00e5ff, topAccent: 0xff00ff, panel: 0x000000, panelOpacity: 0.0, shape: 'none', layout: 'basic' },
       'blue-square': { label: 'BLUE SQUER', accent: 0x009dff, topAccent: 0x00d5ff, panel: 0x000510, panelOpacity: 0.54, shape: 'rect', layout: 'small' },
       'black-square': { label: 'BLACK SQUER', accent: 0x2c3446, topAccent: 0x3a4358, panel: 0x000000, panelOpacity: 0.64, shape: 'rect', layout: 'small' },
       'neon-square': { label: 'NEON SQUER', accent: 0xff35ff, topAccent: 0xb35cff, panel: 0x120018, panelOpacity: 0.58, shape: 'rect', layout: 'small' },
-      'large-rect-blue': { label: 'LARGE RECT BLUE', accent: 0x00aaff, topAccent: 0x00dfff, panel: 0x001229, panelOpacity: 0.7, shape: 'rect', layout: 'large' },
-      'large-rect-black': { label: 'LARGE RECT BLACK', accent: 0x3a465a, topAccent: 0x536072, panel: 0x000000, panelOpacity: 0.83, shape: 'rect', layout: 'large' },
-      'large-rect-white': { label: 'LARGE RECT WHITE', accent: 0xf4fbff, topAccent: 0xffffff, panel: 0xdcecff, panelOpacity: 0.7, shape: 'rect', layout: 'large' },
-      'large-rect-violet': { label: 'LARGE RECT VIOLET', accent: 0xff4dff, topAccent: 0xbc69ff, panel: 0x21002d, panelOpacity: 0.75, shape: 'rect', layout: 'large' },
-      'circle-blue': { label: 'CIRCLE BLUE', accent: 0x00aaff, topAccent: 0x00dfff, panel: 0x001229, panelOpacity: 0.7, shape: 'circle', layout: 'large' },
-      'circle-black': { label: 'CIRCLE BLACK', accent: 0x3a465a, topAccent: 0x536072, panel: 0x000000, panelOpacity: 0.83, shape: 'circle', layout: 'large' },
-      'circle-white': { label: 'CIRCLE WHITE', accent: 0xf4fbff, topAccent: 0xffffff, panel: 0xdcecff, panelOpacity: 0.7, shape: 'circle', layout: 'large' },
-      'circle-violet': { label: 'CIRCLE VIOLET', accent: 0xff4dff, topAccent: 0xbc69ff, panel: 0x21002d, panelOpacity: 0.75, shape: 'circle', layout: 'large' },
-      'block-blue': { label: 'SQUARE BLUE', accent: 0x00aaff, topAccent: 0x00dfff, panel: 0x001229, panelOpacity: 0.7, shape: 'square', layout: 'large' },
-      'block-black': { label: 'SQUARE BLACK', accent: 0x3a465a, topAccent: 0x536072, panel: 0x000000, panelOpacity: 0.83, shape: 'square', layout: 'large' },
-      'block-white': { label: 'SQUARE WHITE', accent: 0xf4fbff, topAccent: 0xffffff, panel: 0xdcecff, panelOpacity: 0.7, shape: 'square', layout: 'large' },
-      'block-violet': { label: 'SQUARE VIOLET', accent: 0xff4dff, topAccent: 0xbc69ff, panel: 0x21002d, panelOpacity: 0.75, shape: 'square', layout: 'large' }
+      'large-rect-blue': { label: 'LARGE RECT BLUE KAMIL D. PROJECT', accent: 0x00aaff, topAccent: 0x00dfff, panel: 0x001229, panelOpacity: 0.7, shape: 'rect', layout: 'large' },
+      'large-rect-black': { label: 'LARGE RECT BLACK KAMIL D. PROJECT', accent: 0x3a465a, topAccent: 0x536072, panel: 0x000000, panelOpacity: 0.83, shape: 'rect', layout: 'large' },
+      'large-rect-white': { label: 'LARGE RECT WHITE KAMIL D. PROJECT', accent: 0xf4fbff, topAccent: 0xffffff, panel: 0xdcecff, panelOpacity: 0.7, shape: 'rect', layout: 'large' },
+      'large-rect-violet': { label: 'LARGE RECT VIOLET KAMIL D. PROJECT', accent: 0xff4dff, topAccent: 0xbc69ff, panel: 0x21002d, panelOpacity: 0.75, shape: 'rect', layout: 'large' },
+      'circle-blue': { label: 'CIRCLE BLUE KAMIL D. PROJECT', accent: 0x00aaff, topAccent: 0x00dfff, panel: 0x001229, panelOpacity: 0.7, shape: 'circle', layout: 'large' },
+      'circle-black': { label: 'CIRCLE BLACK KAMIL D. PROJECT', accent: 0x3a465a, topAccent: 0x536072, panel: 0x000000, panelOpacity: 0.83, shape: 'circle', layout: 'large' },
+      'circle-white': { label: 'CIRCLE WHITE KAMIL D. PROJECT', accent: 0xf4fbff, topAccent: 0xffffff, panel: 0xdcecff, panelOpacity: 0.7, shape: 'circle', layout: 'large' },
+      'circle-violet': { label: 'CIRCLE VIOLET KAMIL D. PROJECT', accent: 0xff4dff, topAccent: 0xbc69ff, panel: 0x21002d, panelOpacity: 0.75, shape: 'circle', layout: 'large' },
+      'block-blue': { label: 'SQUARE BLUE KAMIL D. PROJECT', accent: 0x00aaff, topAccent: 0x00dfff, panel: 0x001229, panelOpacity: 0.7, shape: 'square', layout: 'large' },
+      'block-black': { label: 'SQUARE BLACK KAMIL D. PROJECT', accent: 0x3a465a, topAccent: 0x536072, panel: 0x000000, panelOpacity: 0.83, shape: 'square', layout: 'large' },
+      'block-white': { label: 'SQUARE WHITE KAMIL D. PROJECT', accent: 0xf4fbff, topAccent: 0xffffff, panel: 0xdcecff, panelOpacity: 0.7, shape: 'square', layout: 'large' },
+      'block-violet': { label: 'SQUARE VIOLET KAMIL D. PROJECT', accent: 0xff4dff, topAccent: 0xbc69ff, panel: 0x21002d, panelOpacity: 0.75, shape: 'square', layout: 'large' },
+      editor: { label: 'TUNNEL EDITOR KAMIL D. PROJECT', accent: 0x00e5ff, topAccent: 0xff35ff, panel: 0x120018, panelOpacity: 0.7, shape: 'editor', layout: 'editor' }
     };
     const TUNNEL_STYLE_IDS = Object.keys(TUNNEL_STYLE_CONFIGS);
+    const TUNNEL_RANDOM_STYLE_IDS = TUNNEL_STYLE_IDS.filter(id => id !== 'editor');
     const TUNNEL_STYLE_LABELS = Object.fromEntries(TUNNEL_STYLE_IDS.map(id => [id, TUNNEL_STYLE_CONFIGS[id].label]));
 
     class TunnelEnvironment {
-      constructor(scene, theme = 'basic', quality = 'high', tunnelStyle = 'basic') {
+      constructor(scene, theme = 'basic', quality = 'high', tunnelStyle = 'basic', tunnelOptions = null) {
         this.scene = scene;
         this.theme = theme;
         this.quality = quality;
         this.tunnelStyle = TUNNEL_STYLE_CONFIGS[tunnelStyle] ? tunnelStyle : 'basic';
+        this.tunnelOptions = this.normalizeTunnelOptions(tunnelOptions);
         this.lowQuality = quality !== 'high';
         this.tunnelSegments = [];
         this.blackSquares = [];
@@ -947,12 +1055,87 @@
         this.onRingCollected = () => {};
       }
 
+      normalizeTunnelOptions(options = {}) {
+        const clampInt = (value, min, max, fallback) => Math.max(min, Math.min(max, Math.floor(Number(value) || fallback)));
+        return {
+          figure: clampInt(options?.figure, 1, 20, 1),
+          size: clampInt(options?.size, 1, 10, 2),
+          shapeX: clampInt(options?.shapeX, 1, 10, 1),
+          shapeY: clampInt(options?.shapeY, 1, 10, 1),
+          opacity: clampInt(options?.opacity, 1, 10, 1)
+        };
+      }
+
       getTunnelStyleConfig() {
         const config = TUNNEL_STYLE_CONFIGS[this.tunnelStyle] || TUNNEL_STYLE_CONFIGS.basic;
+        const editorOpacity = 0.7 + ((this.tunnelOptions.opacity - 1) / 9) * 0.3;
         return {
           ...config,
+          panelOpacity: this.tunnelStyle === 'editor' ? editorOpacity : config.panelOpacity,
           floor: config.floor ?? (this.theme === 'basic' ? 0x07091f : 0x101426)
         };
+      }
+
+      createPanelGeometry(shape, width, height) {
+        const scaleGeometry = geo => {
+          geo.scale(width, height, 1);
+          return geo;
+        };
+        const polygon = sides => scaleGeometry(new THREE.CircleGeometry(0.5, sides));
+        const makeShape = points => {
+          const shapePath = new THREE.Shape();
+          points.forEach(([x, y], i) => i === 0 ? shapePath.moveTo(x, y) : shapePath.lineTo(x, y));
+          shapePath.closePath();
+          return scaleGeometry(new THREE.ShapeGeometry(shapePath));
+        };
+        const starPoints = (points = 5, inner = 0.22, outer = 0.5) => {
+          const result = [];
+          for (let i = 0; i < points * 2; i++) {
+            const r = i % 2 === 0 ? outer : inner;
+            const a = -Math.PI / 2 + i * Math.PI / points;
+            result.push([Math.cos(a) * r, Math.sin(a) * r]);
+          }
+          return result;
+        };
+        switch (shape) {
+          case 'circle': return polygon(32);
+          case 'square': return new THREE.PlaneGeometry(width, height);
+          case 'rect': return new THREE.PlaneGeometry(width, height);
+          case 'triangle': return polygon(3);
+          case 'diamond': return makeShape([[0, 0.5], [0.5, 0], [0, -0.5], [-0.5, 0]]);
+          case 'pentagon': return polygon(5);
+          case 'hexagon': return polygon(6);
+          case 'octagon': return polygon(8);
+          case 'star': return makeShape(starPoints(5, 0.22, 0.5));
+          case 'cross':
+          case 'plus': return makeShape([[-0.18, 0.5], [0.18, 0.5], [0.18, 0.18], [0.5, 0.18], [0.5, -0.18], [0.18, -0.18], [0.18, -0.5], [-0.18, -0.5], [-0.18, -0.18], [-0.5, -0.18], [-0.5, 0.18], [-0.18, 0.18]]);
+          case 'ring': return scaleGeometry(new THREE.RingGeometry(0.28, 0.5, 32));
+          case 'bar': return new THREE.PlaneGeometry(width, height * 0.38);
+          case 'capsule': return polygon(24);
+          case 'chevron': return makeShape([[-0.5, 0.35], [-0.12, 0], [-0.5, -0.35], [-0.2, -0.5], [0.5, 0], [-0.2, 0.5]]);
+          case 'arrow': return makeShape([[-0.5, 0.18], [0.08, 0.18], [0.08, 0.42], [0.5, 0], [0.08, -0.42], [0.08, -0.18], [-0.5, -0.18]]);
+          case 'trapezoid': return makeShape([[-0.34, 0.5], [0.34, 0.5], [0.5, -0.5], [-0.5, -0.5]]);
+          case 'parallelogram': return makeShape([[-0.28, 0.5], [0.5, 0.5], [0.28, -0.5], [-0.5, -0.5]]);
+          case 'hourglass': return makeShape([[-0.48, 0.5], [0.48, 0.5], [0.12, 0], [0.48, -0.5], [-0.48, -0.5], [-0.12, 0]]);
+          case 'burst': return makeShape(starPoints(8, 0.26, 0.5));
+          default: return new THREE.PlaneGeometry(width, height);
+        }
+      }
+
+      getEditorPanelLayout(segLen) {
+        const options = this.tunnelOptions;
+        const figure = TUNNEL_EDITOR_FIGURES[options.figure - 1] || TUNNEL_EDITOR_FIGURES[0];
+        const base = 0.42 + options.size * 0.2;
+        const rawWidth = base * (0.75 + options.shapeX * 0.32);
+        const rawHeight = base * (0.75 + options.shapeY * 0.32);
+        const width = Math.min(segLen * 0.78, rawWidth);
+        const height = Math.min(3.35, rawHeight);
+        const gap = Math.max(0.52, Math.min(1.4, 0.36 + Math.max(width, height) * 0.18));
+        const count = Math.max(1, Math.min(this.lowQuality ? 2 : 4, Math.floor((segLen * 0.84 + gap) / (width + gap))));
+        const spacing = count === 1 ? 0 : (width + gap);
+        const start = -((count - 1) * spacing) / 2;
+        const zSlots = Array.from({ length: count }, (_, i) => start + i * spacing);
+        return { shape: figure.id, width, height, zSlots };
       }
 
       addTunnelStylePanels(group, segLen) {
@@ -978,9 +1161,19 @@
           group.add(panel);
         };
 
+        if (config.layout === 'editor') {
+          const layout = this.getEditorPanelLayout(segLen);
+          for (const z of layout.zSlots) {
+            makePanel(this.createPanelGeometry(layout.shape, layout.width, layout.height), -5.93, 2.18, z, 0, Math.PI / 2);
+            makePanel(this.createPanelGeometry(layout.shape, layout.width, layout.height), 5.93, 2.18, z, 0, -Math.PI / 2);
+            makePanel(this.createPanelGeometry(layout.shape, layout.width, layout.height), 0, 4.93, z, -Math.PI / 2, 0);
+          }
+          return;
+        }
+
         if (config.layout === 'large') {
           const zSlots = this.lowQuality ? [-segLen * 0.24, segLen * 0.24] : [-segLen * 0.3, 0, segLen * 0.3];
-          const sideHeights = this.lowQuality ? [2.2] : [1.4, 3.05];
+          const sideHeights = [2.2];
           const makeGeo = (side = false) => {
             if (config.shape === 'circle') return new THREE.CircleGeometry(side ? 1.04 : 1.18, this.lowQuality ? 18 : 28);
             if (config.shape === 'square') return new THREE.PlaneGeometry(side ? 1.55 : 1.75, side ? 1.55 : 1.75);
@@ -2431,6 +2624,7 @@
         this.speedTestVehicle = null;
         this.speedTestRoute = 'basic';
         this.speedTestTunnelStyle = 'basic';
+        this.speedTestTunnelOptions = null;
         this.speedTestScore = 0;
         this.speedTestDistance = 0;
         this.speedTestLane = 1; // 0=left, 1=center, 2=right
@@ -2748,7 +2942,7 @@
         this.menu.onResume = () => this.resumeGame();
         this.menu.onQuit = () => this.quitToMenu();
         this.menu.onSpeedTest = () => { this._hideTransientScreens(); this.menu.hideAll(); this.shipSelection.show(); };
-        this.shipSelection.setOnSelect((v, route, tunnelStyle) => { this.shipSelection.hide(); this.startSpeedTest(v, route, tunnelStyle); });
+        this.shipSelection.setOnSelect((v, route, tunnelStyle, tunnelOptions) => { this.shipSelection.hide(); this.startSpeedTest(v, route, tunnelStyle, tunnelOptions); });
         this.shipSelection.setOnBack(() => this.menu.showMain());
         this.menu.onRes = (v) => {
           this.renderResolution = v || 'window';
@@ -3482,13 +3676,14 @@
         this.speedTestGhost = null;
       }
 
-      startSpeedTest(vehicle, route = 'basic', tunnelStyle = 'basic') {
+      startSpeedTest(vehicle, route = 'basic', tunnelStyle = 'basic', tunnelOptions = null) {
         this._tryFullscreen();
         this._hideTransientScreens();
         this.speedTestMode = true;
         this.speedTestVehicle = vehicle;
         this.speedTestRoute = ['basic', 'forest', 'mountains', 'city'].includes(route) ? route : 'basic';
         this.speedTestTunnelStyle = TUNNEL_STYLE_CONFIGS[tunnelStyle] ? tunnelStyle : 'basic';
+        this.speedTestTunnelOptions = this.speedTestTunnelStyle === 'editor' ? tunnelOptions : null;
         this.speedTestScore = 0;
         this.speedTestDistance = 0;
         this.speedTestLane = 1;
@@ -3516,7 +3711,7 @@
 
         // Build tunnel
         const tunnelQuality = this.isTouchDevice || this.renderResolution === 'mobile720' ? 'mobile' : 'high';
-        this.tunnel = new TunnelEnvironment(this.scene, this.speedTestRoute, tunnelQuality, this.speedTestTunnelStyle);
+        this.tunnel = new TunnelEnvironment(this.scene, this.speedTestRoute, tunnelQuality, this.speedTestTunnelStyle, this.speedTestTunnelOptions);
         document.body.classList.toggle(
           'speedtest-light',
           this.speedTestRoute === 'forest' || this.speedTestRoute === 'mountains' || (this.speedTestRoute === 'city' && !this.tunnel.cityIsNight)

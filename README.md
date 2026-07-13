@@ -7,7 +7,7 @@ Browser 3D sci-fi arcade game built with Three.js, Vite and the Web Audio API.
 The project contains two playable modes:
 
 - **GAME** - classic space combat mode with levels, lasers, planets, rings, speed bonus, ring bonus, UZI, Machine Gun and Shield power-ups.
-- **Kamil Speed Test** - high-speed tunnel ride with selectable or random routes and tunnel projects: Basic, Blue/Black/Neon Squer, large rectangle, circle and square packs.
+- **Kamil Speed Test** - high-speed tunnel ride with selectable or random routes, tunnel packs and a manual Tunnel Editor with 20 geometric figures.
 
 ## Features
 
