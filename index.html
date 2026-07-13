@@ -150,6 +150,17 @@
     }
     #main-menu h1 { font-size: 64px; font-weight: bold; color: #fff; text-shadow: 0 0 30px rgba(255,0,255,0.8), 0 0 60px rgba(0,200,255,0.5); letter-spacing: 8px; margin-bottom: 8px; }
     #main-menu .subtitle { font-size: 14px; color: rgba(0,200,255,0.5); letter-spacing: 6px; margin-bottom: 50px; text-transform: uppercase; }
+    .music-panel {
+      width: min(520px, calc(100vw - 40px)); display: grid; grid-template-columns: 150px 1fr;
+      gap: 10px; align-items: center; margin: -30px 0 22px; padding: 12px;
+      background: rgba(0,14,32,0.62); border: 1px solid rgba(0,229,255,0.22); border-radius: 8px;
+      box-shadow: inset 0 0 18px rgba(0,180,255,0.08);
+    }
+    .music-panel label { font-size: 11px; color: rgba(255,200,0,0.72); letter-spacing: 2px; text-transform: uppercase; }
+    .music-panel select {
+      width: 100%; padding: 8px 10px; font-family: 'Courier New', monospace; font-size: 12px;
+      color: #fff; background: rgba(0,18,36,0.82); border: 1px solid rgba(0,229,255,0.32); border-radius: 6px;
+    }
     .menu-btn { width: 280px; padding: 14px 0; margin: 8px 0; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; letter-spacing: 4px; color: #fff; background: linear-gradient(135deg, rgba(100,0,200,0.25), rgba(0,100,200,0.25)); border: 1px solid rgba(150,100,255,0.4); border-radius: 8px; cursor: pointer; transition: all 0.15s ease-out; text-transform: uppercase; }
     .menu-btn:hover { background: linear-gradient(135deg, rgba(150,50,255,0.5), rgba(0,150,255,0.5)); border-color: rgba(200,150,255,0.8); box-shadow: 0 0 25px rgba(150,100,255,0.4); transform: scale(1.03); }
     .menu-btn:active { transform: scale(0.98); }
@@ -395,6 +406,22 @@
   <div id="main-menu">
     <h1>Space Ship SF K.D.</h1>
     <div class="subtitle">Hyper-Space Racer</div>
+    <div class="music-panel">
+      <label for="music-enabled-select">Music</label>
+      <select id="music-enabled-select">
+        <option value="on">Music On</option>
+        <option value="off">Music Off</option>
+      </select>
+      <label for="music-style-select">Style</label>
+      <select id="music-style-select">
+        <option value="Pixel Soft">Pixel Soft</option>
+        <option value="Pixel Bounce Parade">Pixel Bounce Parade</option>
+        <option value="Pixel Canopy">Pixel Canopy</option>
+        <option value="Pixel Paddle Drift">Pixel Paddle Drift</option>
+        <option value="Pixel Super Sweet">Pixel Super Sweet</option>
+        <option value="Pixel Sweet">Pixel Sweet</option>
+      </select>
+    </div>
     <button class="menu-btn" id="btn-start">Start Game</button>
     <button class="menu-btn" id="btn-speedtest">🚀 Kamil Speed Test</button>
     <button class="menu-btn" id="btn-leaderboard">Leaderboard</button>
@@ -1747,6 +1774,65 @@
         this.enginePlaying = false;
         this.engineBuffer = null;
         this.currentSpeed = 0;
+        this.musicTracks = [
+          { id: 'Pixel Soft', file: 'music/Pixel Soft.wav' },
+          { id: 'Pixel Bounce Parade', file: 'music/Pixel Bounce Parade.wav' },
+          { id: 'Pixel Canopy', file: 'music/Pixel Canopy.wav' },
+          { id: 'Pixel Paddle Drift', file: 'music/Pixel Paddle Drift.wav' },
+          { id: 'Pixel Super Sweet', file: 'music/Pixel Super Sweet.wav' },
+          { id: 'Pixel Sweet', file: 'music/Pixel Sweet).wav' }
+        ];
+        this.musicAudio = new Audio();
+        this.musicAudio.loop = true;
+        this.musicAudio.preload = 'metadata';
+        this.musicAudio.volume = 0.32;
+        this.musicEnabled = localStorage.getItem('space-ship-music-enabled') !== 'off';
+        this.musicStyle = localStorage.getItem('space-ship-music-style') || 'Pixel Soft';
+        if (!this.musicTracks.some(track => track.id === this.musicStyle)) this.musicStyle = 'Pixel Soft';
+        this.applyMusicStyle(this.musicStyle);
+        const unlockMusic = () => this.startMusic();
+        window.addEventListener('pointerdown', unlockMusic, { once: true, passive: true });
+        window.addEventListener('keydown', unlockMusic, { once: true });
+      }
+
+      applyMusicStyle(style) {
+        const track = this.musicTracks.find(item => item.id === style) || this.musicTracks[0];
+        const src = encodeURI(track.file);
+        if (!this.musicAudio.src.endsWith(src)) {
+          const wasPlaying = !this.musicAudio.paused;
+          this.musicAudio.src = src;
+          this.musicAudio.currentTime = 0;
+          if (wasPlaying || this.musicEnabled) this.startMusic();
+        }
+      }
+
+      setMusicEnabled(enabled) {
+        this.musicEnabled = !!enabled;
+        localStorage.setItem('space-ship-music-enabled', this.musicEnabled ? 'on' : 'off');
+        if (this.musicEnabled) this.startMusic();
+        else this.pauseMusic();
+      }
+
+      setMusicStyle(style) {
+        this.musicStyle = this.musicTracks.some(track => track.id === style) ? style : 'Pixel Soft';
+        localStorage.setItem('space-ship-music-style', this.musicStyle);
+        this.applyMusicStyle(this.musicStyle);
+      }
+
+      startMusic() {
+        if (!this.musicEnabled) return;
+        this.musicAudio.play().catch(() => {});
+      }
+
+      pauseMusic() {
+        this.musicAudio.pause();
+      }
+
+      syncMusicControls() {
+        const enabledSelect = document.getElementById('music-enabled-select');
+        const styleSelect = document.getElementById('music-style-select');
+        if (enabledSelect) enabledSelect.value = this.musicEnabled ? 'on' : 'off';
+        if (styleSelect) styleSelect.value = this.musicStyle;
       }
 
       getContext() {
@@ -2546,11 +2632,12 @@
         this.onStart = () => {}; this.onResume = () => {}; this.onQuit = () => {};
         this.onSpeedTest = () => {};
         this.onRes = () => {}; this.onFS = () => {};
+        this.onMusicEnabled = () => {}; this.onMusicStyle = () => {};
         this._bind();
       }
       _bind() {
         const h = () => this.sound.playHover();
-        const c = () => this.sound.playClick();
+        const c = () => { this.sound.playClick(); this.sound.startMusic(); };
         const btns = [
           ['btn-start', () => { c(); this.onStart(); }],
           ['btn-speedtest', () => { c(); this.onSpeedTest(); }],
@@ -2566,6 +2653,14 @@
         }
         document.getElementById('resolution-select').addEventListener('change', e => this.onRes(e.target.value));
         document.getElementById('fullscreen-select').addEventListener('change', e => this.onFS(e.target.value));
+        document.getElementById('music-enabled-select').addEventListener('change', e => {
+          c();
+          this.onMusicEnabled(e.target.value === 'on');
+        });
+        document.getElementById('music-style-select').addEventListener('change', e => {
+          c();
+          this.onMusicStyle(e.target.value);
+        });
       }
       showMain() { this.state='main'; this.mainMenu.style.display='flex'; this.settings.style.display='none'; this.pause.style.display='none'; }
       showSettings() { this.state='settings'; this.mainMenu.style.display='none'; this.settings.style.display='flex'; this.pause.style.display='none'; }
@@ -2617,6 +2712,7 @@
         this.particles = new ParticleSystem(this.scene, this.isTouchDevice ? 1500 : 3000);
         this.hud = new HUD();
         this.menu = new Menu(this.sound);
+        this.sound.syncMusicControls();
         this.shipSelection = new ShipSelection(this.sound);
 
         // Speed Test state
@@ -2949,6 +3045,8 @@
           this._applyRenderResolution();
         };
         this.menu.onFS = (v) => { if (v==='on') this._tryFullscreen(false); else this._exitFullscreen(); };
+        this.menu.onMusicEnabled = (enabled) => this.sound.setMusicEnabled(enabled);
+        this.menu.onMusicStyle = (style) => this.sound.setMusicStyle(style);
       }
 
       _getRenderSize() {

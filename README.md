@@ -13,6 +13,7 @@ The project contains two playable modes:
 
 - Procedural 3D visuals rendered in the browser.
 - Keyboard and touch controls for desktop and mobile.
+- Menu music switch and selectable music style, with Pixel Soft as the default track.
 - Mobile-oriented 720p render preset in settings.
 - Fullscreen option where supported by the browser.
 - FPS counter in both modes.
