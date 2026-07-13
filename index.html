@@ -183,7 +183,7 @@
     }
     #ship-selection h2 { font-size: 36px; color: #fff; text-shadow: 0 0 20px rgba(255,0,255,0.6); letter-spacing: 6px; margin-bottom: 10px; }
     .selection-label { font-size: 11px; color: rgba(255,200,0,0.68); letter-spacing: 3px; margin: 10px 0 4px; text-transform: uppercase; }
-    .option-selector { display: grid; grid-template-columns: repeat(5, minmax(112px, 1fr)); gap: 10px; width: min(960px, 100%); margin: 8px 0 14px; }
+    .option-selector { display: grid; grid-template-columns: repeat(5, minmax(112px, 1fr)); gap: 10px; width: min(1120px, 100%); margin: 8px 0 14px; }
     .route-btn {
       padding: 10px 8px; font-family: 'Courier New', monospace; font-size: 12px; font-weight: bold;
       letter-spacing: 2px; color: rgba(255,255,255,0.72); text-transform: uppercase;
@@ -191,6 +191,7 @@
       cursor: pointer; transition: all 0.15s ease-out;
     }
     .route-btn.long { font-size: 10px; line-height: 1.35; letter-spacing: 1px; }
+    .route-btn.compact { min-height: 48px; font-size: 9px; line-height: 1.25; letter-spacing: 1px; }
     .route-btn:hover, .route-btn.active { color: #fff; border-color: rgba(0,229,255,0.82); box-shadow: 0 0 18px rgba(0,229,255,0.2); background: rgba(20,40,80,0.8); }
     #ship-selection .cat-label { font-size: 14px; color: rgba(0,229,255,0.6); letter-spacing: 4px; margin: 20px 0 10px; text-transform: uppercase; width: 100%; text-align: center; }
     #ship-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; width: 100%; max-width: 1400px; margin-bottom: 20px; }
@@ -477,6 +478,18 @@
       <button class="route-btn long" data-tunnel="blue-square">Blue Squer<br>Kamil D. Project</button>
       <button class="route-btn long" data-tunnel="black-square">Black Squer<br>Kamil D. Project</button>
       <button class="route-btn long" data-tunnel="neon-square">Neon Squer<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="large-rect-blue">Large Rect<br>Blue</button>
+      <button class="route-btn compact" data-tunnel="large-rect-black">Large Rect<br>Black</button>
+      <button class="route-btn compact" data-tunnel="large-rect-white">Large Rect<br>Neon White</button>
+      <button class="route-btn compact" data-tunnel="large-rect-violet">Large Rect<br>Neon Violet</button>
+      <button class="route-btn compact" data-tunnel="circle-blue">Circle<br>Blue</button>
+      <button class="route-btn compact" data-tunnel="circle-black">Circle<br>Black</button>
+      <button class="route-btn compact" data-tunnel="circle-white">Circle<br>Neon White</button>
+      <button class="route-btn compact" data-tunnel="circle-violet">Circle<br>Neon Violet</button>
+      <button class="route-btn compact" data-tunnel="block-blue">Square<br>Blue</button>
+      <button class="route-btn compact" data-tunnel="block-black">Square<br>Black</button>
+      <button class="route-btn compact" data-tunnel="block-white">Square<br>Neon White</button>
+      <button class="route-btn compact" data-tunnel="block-violet">Square<br>Neon Violet</button>
     </div>
     <div id="ship-grid"></div>
     <button class="menu-btn" id="btn-speedtest-back">Back</button>
@@ -878,7 +891,7 @@
       hide() { this.panel.style.display = 'none'; }
       onSelect(vehicle) {
         const routes = ['basic', 'forest', 'mountains', 'city'];
-        const tunnels = ['basic', 'blue-square', 'black-square', 'neon-square'];
+        const tunnels = TUNNEL_STYLE_IDS;
         const route = this.selectedRoute === 'random' ? routes[Math.floor(Math.random() * routes.length)] : this.selectedRoute;
         const tunnel = this.selectedTunnel === 'random' ? tunnels[Math.floor(Math.random() * tunnels.length)] : this.selectedTunnel;
         this.onSelectCallback(vehicle, route, tunnel);
@@ -890,19 +903,33 @@
     // ═══════════════════════════════════════════════
     // VELOCITY TUNNEL ENVIRONMENT
     // ═══════════════════════════════════════════════
-    const TUNNEL_STYLE_LABELS = {
-      basic: 'BASIC',
-      'blue-square': 'BLUE SQUER',
-      'black-square': 'BLACK SQUER',
-      'neon-square': 'NEON SQUER'
+    const TUNNEL_STYLE_CONFIGS = {
+      basic: { label: 'BASIC', accent: 0x00e5ff, topAccent: 0xff00ff, panel: 0x000000, panelOpacity: 0.0, shape: 'none', layout: 'basic' },
+      'blue-square': { label: 'BLUE SQUER', accent: 0x009dff, topAccent: 0x00d5ff, panel: 0x000510, panelOpacity: 0.54, shape: 'rect', layout: 'small' },
+      'black-square': { label: 'BLACK SQUER', accent: 0x2c3446, topAccent: 0x3a4358, panel: 0x000000, panelOpacity: 0.64, shape: 'rect', layout: 'small' },
+      'neon-square': { label: 'NEON SQUER', accent: 0xff35ff, topAccent: 0xb35cff, panel: 0x120018, panelOpacity: 0.58, shape: 'rect', layout: 'small' },
+      'large-rect-blue': { label: 'LARGE RECT BLUE', accent: 0x00aaff, topAccent: 0x00dfff, panel: 0x001229, panelOpacity: 0.7, shape: 'rect', layout: 'large' },
+      'large-rect-black': { label: 'LARGE RECT BLACK', accent: 0x3a465a, topAccent: 0x536072, panel: 0x000000, panelOpacity: 0.83, shape: 'rect', layout: 'large' },
+      'large-rect-white': { label: 'LARGE RECT WHITE', accent: 0xf4fbff, topAccent: 0xffffff, panel: 0xdcecff, panelOpacity: 0.7, shape: 'rect', layout: 'large' },
+      'large-rect-violet': { label: 'LARGE RECT VIOLET', accent: 0xff4dff, topAccent: 0xbc69ff, panel: 0x21002d, panelOpacity: 0.75, shape: 'rect', layout: 'large' },
+      'circle-blue': { label: 'CIRCLE BLUE', accent: 0x00aaff, topAccent: 0x00dfff, panel: 0x001229, panelOpacity: 0.7, shape: 'circle', layout: 'large' },
+      'circle-black': { label: 'CIRCLE BLACK', accent: 0x3a465a, topAccent: 0x536072, panel: 0x000000, panelOpacity: 0.83, shape: 'circle', layout: 'large' },
+      'circle-white': { label: 'CIRCLE WHITE', accent: 0xf4fbff, topAccent: 0xffffff, panel: 0xdcecff, panelOpacity: 0.7, shape: 'circle', layout: 'large' },
+      'circle-violet': { label: 'CIRCLE VIOLET', accent: 0xff4dff, topAccent: 0xbc69ff, panel: 0x21002d, panelOpacity: 0.75, shape: 'circle', layout: 'large' },
+      'block-blue': { label: 'SQUARE BLUE', accent: 0x00aaff, topAccent: 0x00dfff, panel: 0x001229, panelOpacity: 0.7, shape: 'square', layout: 'large' },
+      'block-black': { label: 'SQUARE BLACK', accent: 0x3a465a, topAccent: 0x536072, panel: 0x000000, panelOpacity: 0.83, shape: 'square', layout: 'large' },
+      'block-white': { label: 'SQUARE WHITE', accent: 0xf4fbff, topAccent: 0xffffff, panel: 0xdcecff, panelOpacity: 0.7, shape: 'square', layout: 'large' },
+      'block-violet': { label: 'SQUARE VIOLET', accent: 0xff4dff, topAccent: 0xbc69ff, panel: 0x21002d, panelOpacity: 0.75, shape: 'square', layout: 'large' }
     };
+    const TUNNEL_STYLE_IDS = Object.keys(TUNNEL_STYLE_CONFIGS);
+    const TUNNEL_STYLE_LABELS = Object.fromEntries(TUNNEL_STYLE_IDS.map(id => [id, TUNNEL_STYLE_CONFIGS[id].label]));
 
     class TunnelEnvironment {
       constructor(scene, theme = 'basic', quality = 'high', tunnelStyle = 'basic') {
         this.scene = scene;
         this.theme = theme;
         this.quality = quality;
-        this.tunnelStyle = ['basic', 'blue-square', 'black-square', 'neon-square'].includes(tunnelStyle) ? tunnelStyle : 'basic';
+        this.tunnelStyle = TUNNEL_STYLE_CONFIGS[tunnelStyle] ? tunnelStyle : 'basic';
         this.lowQuality = quality !== 'high';
         this.tunnelSegments = [];
         this.blackSquares = [];
@@ -921,13 +948,11 @@
       }
 
       getTunnelStyleConfig() {
-        const configs = {
-          basic: { accent: 0x00e5ff, topAccent: 0xff00ff, panel: 0x000000, panelOpacity: 0.0, floor: this.theme === 'basic' ? 0x07091f : 0x101426 },
-          'blue-square': { accent: 0x009dff, topAccent: 0x00d5ff, panel: 0x000510, panelOpacity: 0.54, floor: 0x071225 },
-          'black-square': { accent: 0x2c3446, topAccent: 0x3a4358, panel: 0x000000, panelOpacity: 0.64, floor: 0x05070d },
-          'neon-square': { accent: 0xff35ff, topAccent: 0xb35cff, panel: 0x120018, panelOpacity: 0.58, floor: 0x11061c }
+        const config = TUNNEL_STYLE_CONFIGS[this.tunnelStyle] || TUNNEL_STYLE_CONFIGS.basic;
+        return {
+          ...config,
+          floor: config.floor ?? (this.theme === 'basic' ? 0x07091f : 0x101426)
         };
-        return configs[this.tunnelStyle] || configs.basic;
       }
 
       addTunnelStylePanels(group, segLen) {
@@ -952,6 +977,24 @@
           panel.userData.baseOpacity = config.panelOpacity;
           group.add(panel);
         };
+
+        if (config.layout === 'large') {
+          const zSlots = this.lowQuality ? [-segLen * 0.24, segLen * 0.24] : [-segLen * 0.3, 0, segLen * 0.3];
+          const sideHeights = this.lowQuality ? [2.2] : [1.4, 3.05];
+          const makeGeo = (side = false) => {
+            if (config.shape === 'circle') return new THREE.CircleGeometry(side ? 1.04 : 1.18, this.lowQuality ? 18 : 28);
+            if (config.shape === 'square') return new THREE.PlaneGeometry(side ? 1.55 : 1.75, side ? 1.55 : 1.75);
+            return new THREE.PlaneGeometry(side ? Math.min(3.9, segLen * 0.48) : 3.0, side ? 1.22 : Math.min(3.35, segLen * 0.44));
+          };
+          for (const z of zSlots) {
+            for (const y of sideHeights) {
+              makePanel(makeGeo(true), -5.93, y, z, 0, Math.PI / 2);
+              makePanel(makeGeo(true), 5.93, y, z, 0, -Math.PI / 2);
+            }
+            makePanel(makeGeo(false), 0, 4.93, z, -Math.PI / 2, 0);
+          }
+          return;
+        }
 
         const sideGeo = new THREE.PlaneGeometry(panelZ, 0.82);
         for (const z of zSlots) {
@@ -3445,7 +3488,7 @@
         this.speedTestMode = true;
         this.speedTestVehicle = vehicle;
         this.speedTestRoute = ['basic', 'forest', 'mountains', 'city'].includes(route) ? route : 'basic';
-        this.speedTestTunnelStyle = ['basic', 'blue-square', 'black-square', 'neon-square'].includes(tunnelStyle) ? tunnelStyle : 'basic';
+        this.speedTestTunnelStyle = TUNNEL_STYLE_CONFIGS[tunnelStyle] ? tunnelStyle : 'basic';
         this.speedTestScore = 0;
         this.speedTestDistance = 0;
         this.speedTestLane = 1;
