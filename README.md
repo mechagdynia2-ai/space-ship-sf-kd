@@ -4,6 +4,21 @@ Browser 3D sci-fi arcade game built with Three.js, Vite and the Web Audio API.
 
 🚀🚀🚀 Press&play here - https://mechagdynia2-ai.github.io/space-ship-sf-kd/ 🚀🚀🚀
 
+## Version 1.1
+
+Version 1.1 expands **Kamil Speed Test** and prepares the game for the next GitHub Pages release.
+
+- Added Kamil D. Art Concept gallery with tunnel, futuristic vehicle and hand-drawn concept images.
+- Added Kami D. Direct Concept tunnel styles based on in-game concept art.
+- Reworked Speed Test tunnel floors, ceilings and biome-colored underlays.
+- Added compact mobile Speed Test HUD, oscilloscope, G-force meter and CORE temperature meter.
+- Added 150 futuristic/cosmic speedcraft with unlock progression.
+- Added vehicle unlock persistence via browser `localStorage`.
+- Added ABCD unlock quiz with astronomy, physics and automotive questions.
+- Added real/futuristic vehicle separation, production years and sorted speed progression.
+- Added Speed Test milestone messages in English.
+- Added local visitor counter support through `server.js` for development/testing.
+
 The project contains two playable modes:
 
 - **GAME** - classic space combat mode with levels, lasers, planets, rings, speed bonus, ring bonus, UZI, Machine Gun and Shield power-ups.

@@ -9,6 +9,7 @@ const DIST_DIR = path.join(ROOT_DIR, 'dist');
 const DATA_DIR = path.join(ROOT_DIR, 'data');
 const SCORE_FILE = path.join(DATA_DIR, 'scores.json');
 const TEST_LOG_FILE = path.join(DATA_DIR, 'test-log.json');
+const VISITOR_FILE = path.join(DATA_DIR, 'visitors.json');
 const MAX_SCORES = 100;
 const MAX_TEST_LOGS = 20;
 const MAX_BODY_BYTES = 4096;
@@ -226,6 +227,42 @@ async function handleTestLog(req, res) {
   sendJson(res, 201, { saved: true, count: logs.length });
 }
 
+async function handleVisitors(req, res) {
+  if (req.method !== 'POST' && req.method !== 'GET') {
+    sendJson(res, 405, { error: 'Method not allowed' });
+    return;
+  }
+
+  if (req.method === 'POST' && !checkRateLimit(req)) {
+    sendJson(res, 429, { error: 'Too many visitor updates' });
+    return;
+  }
+
+  await fs.mkdir(DATA_DIR, { recursive: true });
+  let visitors = [];
+  try {
+    visitors = JSON.parse(await fs.readFile(VISITOR_FILE, 'utf8'));
+    if (!Array.isArray(visitors)) visitors = [];
+  } catch {
+    visitors = [];
+  }
+
+  if (req.method === 'POST') {
+    const forwarded = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+    const ip = forwarded || req.socket.remoteAddress || 'unknown';
+    const userAgent = String(req.headers['user-agent'] || 'unknown').slice(0, 160);
+    const hash = crypto.createHash('sha256').update(`${ip}|${userAgent}`).digest('hex');
+    if (!visitors.some(entry => entry.hash === hash)) {
+      visitors.push({ hash, firstSeenAt: new Date().toISOString() });
+      const tempFile = `${VISITOR_FILE}.${process.pid}.tmp`;
+      await fs.writeFile(tempFile, `${JSON.stringify(visitors, null, 2)}\n`, 'utf8');
+      await fs.rename(tempFile, VISITOR_FILE);
+    }
+  }
+
+  sendJson(res, 200, { visitors: visitors.length });
+}
+
 async function getPublicDir() {
   try {
     await fs.access(path.join(DIST_DIR, 'index.html'));
@@ -272,6 +309,10 @@ const server = http.createServer(async (req, res) => {
     }
     if (url.pathname === '/api/test-log') {
       await handleTestLog(req, res);
+      return;
+    }
+    if (url.pathname === '/api/visitors') {
+      await handleVisitors(req, res);
       return;
     }
     await serveStatic(req, res, url);

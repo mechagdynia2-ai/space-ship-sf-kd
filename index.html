@@ -141,6 +141,32 @@
     .leaderboard-row strong { color: #00e5ff; letter-spacing: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .leaderboard-row .score { color: #ffc800; text-align: right; font-weight: bold; }
     .leaderboard-row .mode { color: rgba(255,0,255,0.68); font-size: 11px; text-align: right; text-transform: uppercase; }
+    .art-panel {
+      position: fixed; inset: 0; z-index: 119; display: none; flex-direction: column; align-items: center;
+      background: radial-gradient(ellipse at center, rgba(7,0,24,0.98), rgba(0,0,0,0.995));
+      padding: 26px 18px; overflow: hidden;
+    }
+    .art-panel h2 { font-size: 34px; color: #fff; text-shadow: 0 0 20px rgba(0,229,255,0.56); letter-spacing: 5px; margin-bottom: 12px; text-align: center; }
+    .art-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 14px; }
+    .art-tab {
+      padding: 9px 12px; font-family: 'Courier New', monospace; font-size: 11px; font-weight: bold; letter-spacing: 1px;
+      color: rgba(255,255,255,0.78); background: rgba(0,18,36,0.74); border: 1px solid rgba(0,229,255,0.24);
+      border-radius: 6px; cursor: pointer; text-transform: uppercase;
+    }
+    .art-tab.active { color: #fff; border-color: rgba(0,229,255,0.78); box-shadow: 0 0 16px rgba(0,229,255,0.2); }
+    .art-viewer { width: min(980px, calc(100vw - 28px)); flex: 1; min-height: 0; display: grid; grid-template-columns: 54px 1fr 54px; gap: 12px; align-items: center; }
+    .art-image-wrap {
+      height: 100%; min-height: 260px; display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(0,229,255,0.18); border-radius: 8px; background: rgba(0,10,22,0.64); overflow: hidden;
+      box-shadow: inset 0 0 28px rgba(0,180,255,0.08);
+    }
+    #art-image { max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
+    .art-nav {
+      width: 54px; height: 54px; border-radius: 50%; border: 1px solid rgba(0,229,255,0.42);
+      background: rgba(0,20,42,0.82); color: #fff; font-size: 28px; cursor: pointer;
+    }
+    .art-caption { min-height: 18px; margin: 10px 0 8px; color: rgba(255,255,255,0.72); font-size: 12px; letter-spacing: 1px; text-align: center; }
+    #visitor-counter { margin-top: 12px; font-size: 12px; color: rgba(0,229,255,0.72); letter-spacing: 2px; text-transform: uppercase; }
 
     /* ─── Main Menu ─── */
     #main-menu {
@@ -164,6 +190,12 @@
     .menu-btn { width: 280px; padding: 14px 0; margin: 8px 0; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; letter-spacing: 4px; color: #fff; background: linear-gradient(135deg, rgba(100,0,200,0.25), rgba(0,100,200,0.25)); border: 1px solid rgba(150,100,255,0.4); border-radius: 8px; cursor: pointer; transition: all 0.15s ease-out; text-transform: uppercase; }
     .menu-btn:hover { background: linear-gradient(135deg, rgba(150,50,255,0.5), rgba(0,150,255,0.5)); border-color: rgba(200,150,255,0.8); box-shadow: 0 0 25px rgba(150,100,255,0.4); transform: scale(1.03); }
     .menu-btn:active { transform: scale(0.98); }
+    @media (max-width: 700px) {
+      .art-viewer { grid-template-columns: 42px 1fr 42px; gap: 7px; }
+      .art-nav { width: 42px; height: 42px; font-size: 22px; }
+      .art-panel h2 { font-size: 24px; letter-spacing: 3px; }
+      .art-tab { font-size: 10px; padding: 8px 9px; }
+    }
 
     /* ─── Settings Panel ─── */
     #settings-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(ellipse at center, rgba(20,0,40,0.97), rgba(0,0,0,0.99)); z-index: 110; overflow-y: auto; padding: 20px; }
@@ -204,6 +236,16 @@
     .route-btn.long { font-size: 10px; line-height: 1.35; letter-spacing: 1px; }
     .route-btn.compact { min-height: 48px; font-size: 9px; line-height: 1.25; letter-spacing: 1px; }
     .route-btn:hover, .route-btn.active { color: #fff; border-color: rgba(0,229,255,0.82); box-shadow: 0 0 18px rgba(0,229,255,0.2); background: rgba(20,40,80,0.8); }
+    .route-btn.editor-tunnel {
+      color: rgba(255,235,120,0.92); background: linear-gradient(135deg, rgba(70,38,0,0.86), rgba(84,0,88,0.76));
+      border-color: rgba(255,210,0,0.62); box-shadow: inset 0 0 16px rgba(255,210,0,0.12), 0 0 18px rgba(255,210,0,0.14);
+    }
+    .route-btn.editor-tunnel:hover, .route-btn.editor-tunnel.active {
+      color: #fff8b8; border-color: rgba(255,235,80,0.95);
+      background: linear-gradient(135deg, rgba(106,58,0,0.94), rgba(120,0,128,0.86));
+      box-shadow: inset 0 0 20px rgba(255,210,0,0.2), 0 0 24px rgba(255,210,0,0.28);
+    }
+    .route-btn.editor-tunnel .editor-word { color: #ffd900; text-shadow: 0 0 10px rgba(255,217,0,0.9); }
     #tunnel-editor {
       display: none; width: min(960px, 100%); margin: 0 0 16px;
       grid-template-columns: repeat(2, minmax(260px, 1fr)); gap: 12px;
@@ -216,7 +258,7 @@
     .editor-control label { font-size: 10px; color: rgba(0,229,255,0.68); letter-spacing: 2px; text-transform: uppercase; }
     .editor-control span { min-width: 92px; text-align: right; font-size: 10px; color: rgba(255,200,0,0.82); letter-spacing: 1px; text-transform: uppercase; }
     .editor-control input[type="range"] { grid-column: 1 / -1; width: 100%; accent-color: #b35cff; }
-    #ship-selection .cat-label { font-size: 14px; color: rgba(0,229,255,0.6); letter-spacing: 4px; margin: 20px 0 10px; text-transform: uppercase; width: 100%; text-align: center; }
+    #ship-selection .cat-label { grid-column: 1 / -1; font-size: 14px; color: rgba(0,229,255,0.6); letter-spacing: 4px; margin: 20px 0 10px; text-transform: uppercase; width: 100%; text-align: center; }
     #ship-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; width: 100%; max-width: 1400px; margin-bottom: 20px; }
     .ship-card {
       background: linear-gradient(135deg, rgba(10,5,30,0.9), rgba(20,10,40,0.9));
@@ -230,18 +272,66 @@
     .ship-card .ship-name { font-size: 15px; font-weight: bold; color: #00e5ff; letter-spacing: 2px; margin-bottom: 2px; }
     .ship-card .ship-class { font-size: 10px; color: rgba(255,0,255,0.6); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; }
     .ship-card .ship-desc { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.3; margin-bottom: 8px; font-style: italic; }
+    .ship-card .ship-origin {
+      display: inline-block; margin-bottom: 6px; padding: 3px 7px; border-radius: 4px;
+      font-size: 9px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;
+    }
+    .ship-card .ship-origin.real { color: #08120a; background: #74ff8a; box-shadow: 0 0 10px rgba(116,255,138,0.32); }
+    .ship-card .ship-origin.future { color: #06121a; background: #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.28); }
     .vehicle-swatch { height: 8px; border-radius: 4px; margin-bottom: 10px; box-shadow: 0 0 12px rgba(0,229,255,0.16); }
     .ship-card .ship-stats { display: flex; gap: 15px; }
     .ship-card .stat { font-size: 11px; color: rgba(255,200,0,0.7); }
     .ship-card .stat span { color: #ffc800; font-weight: bold; }
     .ship-card .stat-bar { width: 100%; height: 3px; background: rgba(255,255,255,0.05); border-radius: 2px; margin-top: 4px; overflow: hidden; }
     .ship-card .stat-bar-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+    .ship-card.locked { cursor: not-allowed; opacity: 0.48; filter: grayscale(0.72); }
+    .ship-card.locked:hover {
+      border-color: rgba(255,200,0,0.42); transform: none;
+      box-shadow: inset 0 0 18px rgba(255,200,0,0.08);
+    }
+    .ship-card.locked .stat-bar-fill { background: #555 !important; }
+    .ship-lock {
+      position: absolute; top: 10px; right: 10px; padding: 4px 7px; border-radius: 4px;
+      color: #101000; background: #ffc800; font-size: 9px; font-weight: bold; letter-spacing: 2px;
+      box-shadow: 0 0 12px rgba(255,200,0,0.36);
+    }
+    .unlock-note { margin-bottom: 7px; font-size: 10px; color: rgba(255,200,0,0.78); letter-spacing: 1px; text-transform: uppercase; }
+    .unlock-quiz {
+      position: fixed; inset: 0; z-index: 126; display: none; align-items: center; justify-content: center;
+      padding: 18px; background: rgba(0,0,10,0.72); backdrop-filter: blur(4px);
+    }
+    .unlock-quiz-card {
+      width: min(560px, calc(100vw - 28px)); padding: 18px; border-radius: 8px;
+      background: linear-gradient(135deg, rgba(10,8,30,0.96), rgba(30,14,54,0.96));
+      border: 1px solid rgba(255,200,0,0.42); box-shadow: 0 0 30px rgba(255,200,0,0.16);
+    }
+    .unlock-quiz-title { color: #ffc800; font-size: 13px; font-weight: bold; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
+    .unlock-quiz-target { color: rgba(0,229,255,0.8); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+    .unlock-quiz-question { color: rgba(255,255,255,0.88); font-size: 14px; line-height: 1.35; margin-bottom: 12px; }
+    .unlock-quiz-options { display: grid; gap: 8px; }
+    .quiz-option {
+      width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,229,255,0.26);
+      background: rgba(0,18,36,0.82); color: rgba(255,255,255,0.82); font-family: 'Courier New', monospace;
+      font-size: 12px; text-align: left; cursor: pointer;
+    }
+    .quiz-option:hover { border-color: rgba(0,229,255,0.8); color: #fff; background: rgba(20,40,80,0.9); }
+    .quiz-option.correct { border-color: rgba(116,255,138,0.95); background: rgba(20,90,40,0.9); color: #b8ffd0; }
+    .quiz-option.wrong { border-color: rgba(255,64,96,0.9); background: rgba(90,16,34,0.9); color: #ffd0d8; }
+    .unlock-quiz-status { min-height: 18px; margin-top: 10px; color: rgba(255,200,0,0.82); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+    .unlock-quiz-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+    .quiz-small-btn {
+      padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.08); color: #fff; font-family: 'Courier New', monospace;
+      font-size: 11px; letter-spacing: 2px; cursor: pointer; text-transform: uppercase;
+    }
+    .quiz-small-btn:hover { border-color: rgba(255,200,0,0.72); color: #ffc800; }
     #btn-speedtest-back { margin-top: 10px; margin-bottom: 30px; }
 
     /* ─── Speed Test HUD ─── */
-    #speedtest-hud { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 20; display: none; text-align: center; }
+    #speedtest-hud { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 20; display: none; text-align: center; width: max-content; max-width: calc(100vw - 24px); pointer-events: none; }
     #speedtest-shipname { font-size: 12px; color: rgba(0,229,255,0.7); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 4px; }
-    #speedtest-speed { font-size: 56px; font-weight: bold; color: #00e5ff; text-shadow: 0 0 30px rgba(0,229,255,0.7); line-height: 1; }
+    #speedtest-speed-pill { display: inline-flex; align-items: baseline; justify-content: center; gap: 8px; width: max-content; max-width: 100%; padding: 5px 11px 6px; border: 1px solid rgba(0,229,255,0.22); border-radius: 8px; background: rgba(0, 10, 22, 0.32); backdrop-filter: blur(3px); box-shadow: 0 0 18px rgba(0, 229, 255, 0.12); }
+    #speedtest-speed { font-size: 56px; font-weight: bold; color: #00e5ff; text-shadow: 0 0 30px rgba(0,229,255,0.7); line-height: 1; font-variant-numeric: tabular-nums; }
     #speedtest-unit { font-size: 12px; color: rgba(0,200,255,0.5); letter-spacing: 3px; }
     #speedtest-distance { font-size: 14px; color: rgba(255,200,0,0.7); letter-spacing: 2px; margin-top: 4px; }
     #speedtest-score { font-size: 14px; color: rgba(0,255,136,0.7); letter-spacing: 2px; margin-top: 2px; }
@@ -249,20 +339,62 @@
     #speedtest-overdrive { width: 220px; height: 8px; margin: 8px auto 0; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,200,0,0.28); border-radius: 6px; overflow: hidden; }
     #speedtest-overdrive-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #ffcc00, #ff0060); box-shadow: 0 0 12px rgba(255,120,0,0.6); transition: width 0.12s ease-out; }
     #speedtest-warning { font-size: 12px; color: #ff405f; letter-spacing: 4px; margin-top: 7px; min-height: 16px; text-shadow: 0 0 14px rgba(255,0,64,0.8); }
-    #speedtest-perfect { position: fixed; top: 34%; left: 50%; transform: translateX(-50%); z-index: 28; pointer-events: none; font-size: 22px; font-weight: bold; color: #fff; letter-spacing: 5px; text-shadow: 0 0 24px rgba(0,229,255,0.85), 0 0 48px rgba(255,0,255,0.55); opacity: 0; transition: opacity 0.16s ease-out; }
+    #speedtest-perfect { position: fixed; top: 34%; left: 50%; transform: translateX(-50%); z-index: 28; pointer-events: none; max-width: min(760px, calc(100vw - 28px)); text-align: center; font-size: 22px; font-weight: bold; color: #fff; letter-spacing: 2px; line-height: 1.25; text-shadow: 0 0 24px rgba(0,229,255,0.85), 0 0 48px rgba(255,0,255,0.55); opacity: 0; transition: opacity 0.16s ease-out; }
     #btn-speedtest-save { width: 150px; margin-top: 8px; padding: 8px 0; font-size: 11px; letter-spacing: 2px; display: none; }
     #speedtest-topbar { position: fixed; top: 0; left: 0; width: 100%; height: 6px; background: rgba(0,0,0,0.5); z-index: 25; display: none; }
     #speedtest-topbar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #00e5ff, #ff00ff, #ff0060); transition: width 0.1s; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
-    body.speedtest-light #speedtest-hud {
-      background: rgba(235, 248, 255, 0.48); border: 1px solid rgba(0, 40, 70, 0.18);
-      border-radius: 10px; padding: 7px 12px; backdrop-filter: blur(3px);
+    .speedtest-instrument {
+      position: fixed; z-index: 24; display: none; pointer-events: none; font-family: 'Courier New', monospace;
+      color: rgba(210,250,255,0.86); text-transform: uppercase; text-shadow: 0 0 8px rgba(0,229,255,0.28);
     }
+    #speedtest-left-instruments { top: 78px; left: max(12px, env(safe-area-inset-left)); width: 86px; }
+    .instrument-label { font-size: 9px; letter-spacing: 2px; color: rgba(0,229,255,0.72); text-align: center; margin-bottom: 4px; }
+    #speedtest-oscilloscope {
+      display: block; width: 78px; height: 104px; margin: 0 auto 8px;
+      border: 1px solid rgba(0,229,255,0.22); border-radius: 6px; background: rgba(0,10,22,0.3);
+      box-shadow: inset 0 0 14px rgba(0,180,255,0.08);
+    }
+    #gforce-meter {
+      position: relative; width: 64px; height: 64px; margin: 0 auto;
+      border: 1px solid rgba(0,229,255,0.34); border-radius: 50%; background: rgba(0,10,22,0.28);
+      box-shadow: inset 0 0 14px rgba(0,180,255,0.08), 0 0 12px rgba(0,229,255,0.08);
+    }
+    #gforce-meter::before, #gforce-meter::after { content: ""; position: absolute; background: rgba(0,229,255,0.24); }
+    #gforce-meter::before { left: 50%; top: 7px; width: 1px; height: 50px; }
+    #gforce-meter::after { left: 7px; top: 50%; width: 50px; height: 1px; }
+    #gforce-dot {
+      position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px;
+      border-radius: 50%; background: #ffcc00; box-shadow: 0 0 12px rgba(255,204,0,0.8);
+      transform: translate(0, 0);
+    }
+    #gforce-value { margin-top: 4px; text-align: center; font-size: 9px; letter-spacing: 1px; color: rgba(255,200,0,0.74); }
+    #speedtest-core-temp { top: 78px; right: max(12px, env(safe-area-inset-right)); width: 44px; text-align: center; }
+    #core-temp-track {
+      position: relative; width: 12px; height: 142px; margin: 4px auto;
+      border: 1px solid rgba(255,255,255,0.24); border-radius: 8px; background: rgba(0,10,22,0.32);
+      overflow: hidden; box-shadow: inset 0 0 12px rgba(0,0,0,0.28);
+    }
+    #core-temp-fill {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 0%;
+      background: linear-gradient(0deg, #00ff88, #ffcc00, #ff2d40);
+      box-shadow: 0 0 12px rgba(255,80,40,0.45);
+    }
+    #core-temp-value { font-size: 9px; letter-spacing: 1px; color: rgba(255,255,255,0.78); }
+    body.speedtest-light #speedtest-hud {
+      background: transparent; border: 0; border-radius: 0; padding: 0; backdrop-filter: none;
+    }
+    body.speedtest-light #speedtest-speed-pill { background: rgba(235, 248, 255, 0.58); border-color: rgba(0, 40, 70, 0.18); box-shadow: 0 0 14px rgba(255,255,255,0.32); }
     body.speedtest-light #speedtest-shipname { color: rgba(5, 34, 54, 0.82); text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
     body.speedtest-light #speedtest-speed { color: #05324f; text-shadow: 0 1px 0 rgba(255,255,255,0.82), 0 0 12px rgba(255,255,255,0.75); }
     body.speedtest-light #speedtest-unit { color: rgba(5, 34, 54, 0.72); }
     body.speedtest-light #speedtest-distance { color: #5b3b00; text-shadow: 0 1px 2px rgba(255,255,255,0.75); }
     body.speedtest-light #speedtest-score { color: #006232; text-shadow: 0 1px 2px rgba(255,255,255,0.75); }
     body.speedtest-light #speedtest-combo { color: #65006f; text-shadow: 0 1px 2px rgba(255,255,255,0.75); }
+    body.speedtest-light .speedtest-instrument { color: rgba(5,34,54,0.86); text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
+    body.speedtest-light .instrument-label { color: rgba(5,34,54,0.72); }
+    body.speedtest-light #speedtest-oscilloscope,
+    body.speedtest-light #gforce-meter,
+    body.speedtest-light #core-temp-track { background: rgba(235,248,255,0.38); border-color: rgba(0,70,110,0.28); }
     body.speedtest-light #fps-counter { color: rgba(5,34,54,0.86); text-shadow: 0 1px 2px rgba(255,255,255,0.85); }
     body.speedtest-light #touch-esc { color: #06283f; background: rgba(235,248,255,0.68); border-color: rgba(0,70,110,0.28); }
 
@@ -354,7 +486,28 @@
       body.touch-controls-on #fps-counter { top: 34px; left: max(12px, env(safe-area-inset-left)); font-size: 10px; }
       body.touch-controls-on #touch-esc { display: block; left: max(92px, calc(env(safe-area-inset-left) + 92px)); }
       body.touch-controls-on #level-display { top: 56px; right: 12px; }
-      body.touch-controls-on #speedtest-hud { top: 12px; transform: translateX(-50%) scale(0.78); transform-origin: top center; }
+      body.touch-controls-on #speedtest-hud { top: 10px; transform: translateX(-50%); transform-origin: top center; max-width: calc(100vw - 170px); }
+      body.touch-controls-on #speedtest-shipname { display: none; }
+      body.touch-controls-on #speedtest-speed-pill { padding: 3px 8px 4px; gap: 5px; }
+      body.touch-controls-on #speedtest-speed { font-size: 32px; }
+      body.touch-controls-on #speedtest-unit { font-size: 9px; letter-spacing: 1px; }
+      body.touch-controls-on #speedtest-distance,
+      body.touch-controls-on #speedtest-score,
+      body.touch-controls-on #speedtest-combo,
+      body.touch-controls-on #speedtest-warning { font-size: 10px; letter-spacing: 1px; margin-top: 2px; }
+      body.touch-controls-on #speedtest-overdrive { width: 112px; height: 5px; margin-top: 4px; }
+      body.touch-controls-on #speedtest-perfect { top: 28%; font-size: 16px; letter-spacing: 1px; }
+      body.touch-controls-on #speedtest-left-instruments { top: 52px; left: max(8px, env(safe-area-inset-left)); width: 66px; }
+      body.touch-controls-on #speedtest-oscilloscope { width: 58px; height: 76px; margin-bottom: 5px; }
+      body.touch-controls-on #gforce-meter { width: 46px; height: 46px; }
+      body.touch-controls-on #gforce-meter::before { top: 5px; height: 36px; }
+      body.touch-controls-on #gforce-meter::after { left: 5px; width: 36px; }
+      body.touch-controls-on #gforce-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; }
+      body.touch-controls-on #gforce-value,
+      body.touch-controls-on .instrument-label,
+      body.touch-controls-on #core-temp-value { font-size: 8px; letter-spacing: 1px; }
+      body.touch-controls-on #speedtest-core-temp { top: 52px; right: max(8px, env(safe-area-inset-right)); width: 34px; }
+      body.touch-controls-on #core-temp-track { width: 9px; height: 112px; }
       body.touch-controls-on #bonus-display { top: 8px; transform: translateX(-50%) scale(0.86); }
     }
 
@@ -429,10 +582,12 @@
       </select>
     </div>
     <button class="menu-btn" id="btn-start">Start Game</button>
+    <button class="menu-btn" id="btn-art-concept" style="font-size:12px;">Kamil D. Art Concept</button>
     <button class="menu-btn" id="btn-speedtest">🚀 Kamil Speed Test</button>
     <button class="menu-btn" id="btn-leaderboard">Leaderboard</button>
     <button class="menu-btn" id="btn-settings">Settings</button>
     <button class="menu-btn" id="btn-test" style="font-size:12px;">⚡ Run Auto Test</button>
+    <div id="visitor-counter">Visitors: ...</div>
   </div>
 
   <div id="settings-panel">
@@ -504,6 +659,20 @@
     <button class="menu-btn" id="btn-leaderboard-back">Back</button>
   </div>
 
+  <div class="art-panel" id="art-panel">
+    <h2>KAMIL D. ART CONCEPT</h2>
+    <div class="art-tabs" id="art-tabs"></div>
+    <div class="art-viewer">
+      <button class="art-nav" id="btn-art-prev" aria-label="Previous image">‹</button>
+      <div class="art-image-wrap" id="art-image-wrap">
+        <img id="art-image" alt="Kamil D. Art Concept">
+      </div>
+      <button class="art-nav" id="btn-art-next" aria-label="Next image">›</button>
+    </div>
+    <div class="art-caption" id="art-caption"></div>
+    <button class="menu-btn" id="btn-art-back">Back</button>
+  </div>
+
   <!-- Ship Selection Grid -->
   <div id="ship-selection">
     <h2>KAMIL SPEED TEST</h2>
@@ -511,7 +680,10 @@
     <div class="selection-label">Route / World</div>
     <div id="route-selector" class="option-selector">
       <button class="route-btn active" data-route="random">Random</button>
-      <button class="route-btn" data-route="basic">Basic</button>
+      <button class="route-btn compact" data-route="basic-white">Basic White</button>
+      <button class="route-btn compact" data-route="basic-blue">Basic Blue</button>
+      <button class="route-btn compact" data-route="basic-green">Basic Green</button>
+      <button class="route-btn compact" data-route="basic-desert">Basic Desert</button>
       <button class="route-btn" data-route="forest">Forest</button>
       <button class="route-btn" data-route="mountains">Mountains</button>
       <button class="route-btn" data-route="city">City</button>
@@ -535,7 +707,16 @@
       <button class="route-btn compact" data-tunnel="block-black">Square Black<br>Kamil D. Project</button>
       <button class="route-btn compact" data-tunnel="block-white">Square White<br>Kamil D. Project</button>
       <button class="route-btn compact" data-tunnel="block-violet">Square Violet<br>Kamil D. Project</button>
-      <button class="route-btn long" data-tunnel="editor">Tunnel Editor<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="qube-floor">QUBE Style Flor<br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="qube-floor-lite">QUBE Style Flor Half Density<br>Kamil D. Project</button>
+      <button class="route-btn long editor-tunnel" data-tunnel="editor">Tunnel <span class="editor-word">EDITOR</span><br>Kamil D. Project</button>
+      <button class="route-btn compact" data-tunnel="direct-concept-01">Kami D. Direct Concept 01</button>
+      <button class="route-btn compact" data-tunnel="direct-concept-02">Kami D. Direct Concept 02</button>
+      <button class="route-btn compact" data-tunnel="direct-concept-03">Kami D. Direct Concept 03</button>
+      <button class="route-btn compact" data-tunnel="direct-concept-04">Kami D. Direct Concept 04</button>
+      <button class="route-btn compact" data-tunnel="direct-concept-05">Kami D. Direct Concept 05</button>
+      <button class="route-btn compact" data-tunnel="direct-concept-06">Kami D. Direct Concept 06</button>
+      <button class="route-btn compact" data-tunnel="direct-concept-07">Kami D. Direct Concept 07</button>
     </div>
     <div id="tunnel-editor">
       <div class="editor-side">
@@ -570,13 +751,27 @@
     </div>
     <div id="ship-grid"></div>
     <button class="menu-btn" id="btn-speedtest-back">Back</button>
+    <div class="unlock-quiz" id="vehicle-unlock-quiz">
+      <div class="unlock-quiz-card">
+        <div class="unlock-quiz-title">Unlock Quiz</div>
+        <div class="unlock-quiz-target" id="quiz-target"></div>
+        <div class="unlock-quiz-question" id="quiz-question"></div>
+        <div class="unlock-quiz-options" id="quiz-options"></div>
+        <div class="unlock-quiz-status" id="quiz-status"></div>
+        <div class="unlock-quiz-actions">
+          <button class="quiz-small-btn" id="btn-quiz-close">Close</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Speed Test HUD -->
   <div id="speedtest-hud">
     <div id="speedtest-shipname"></div>
-    <div id="speedtest-speed">0</div>
-    <div id="speedtest-unit">KM/H</div>
+    <div id="speedtest-speed-pill">
+      <div id="speedtest-speed">0</div>
+      <div id="speedtest-unit">KM/H</div>
+    </div>
     <div id="speedtest-distance">DISTANCE: 0m</div>
     <div id="speedtest-score">SCORE: 0</div>
     <div id="speedtest-combo"></div>
@@ -586,6 +781,18 @@
   </div>
   <div id="speedtest-perfect"></div>
   <div id="speedtest-topbar"><div id="speedtest-topbar-fill"></div></div>
+  <div id="speedtest-left-instruments" class="speedtest-instrument">
+    <div class="instrument-label">OSC</div>
+    <canvas id="speedtest-oscilloscope" width="78" height="104"></canvas>
+    <div class="instrument-label">G-FORCE</div>
+    <div id="gforce-meter"><div id="gforce-dot"></div></div>
+    <div id="gforce-value">0.0G</div>
+  </div>
+  <div id="speedtest-core-temp" class="speedtest-instrument">
+    <div class="instrument-label">CORE</div>
+    <div id="core-temp-track"><div id="core-temp-fill"></div></div>
+    <div id="core-temp-value">0%</div>
+  </div>
 
   <div id="touch-controls" aria-label="Touch controls">
     <button class="touch-btn small" id="touch-esc" data-key="escape" aria-label="Escape">ESC</button>
@@ -724,6 +931,302 @@
       { id: 31, name: "Saturn V", class: "Space Booster", desc: "The monumental Apollo program Moon rocket architecture. Generating an awe-inspiring 7.5 million pounds of raw planetary escape thrust.", maxSpeed: 9920, accelTime: 45.0, color: 0xdddddd, accent: 0xff4444, type: "booster" },
     ];
 
+    const COSMIC_SHIP_PREFIXES = [
+      "Astra", "Void", "Photon", "Nova", "Quasar", "Pulsar", "Orion", "Zenith", "Vega", "Helios",
+      "Nebula", "Ion", "Lumen", "Eclipse", "Comet", "Solar", "Vector", "Cosmo", "Aurora", "Stellar",
+      "Warp", "Plasma", "Meteor", "Quantum", "Drift"
+    ];
+    const COSMIC_SHIP_SUFFIXES = [
+      "Needle", "Halo", "Shard", "Skimmer", "Ray", "Crown", "Arrow", "Lance", "Wisp", "Blade",
+      "Runner", "Cruiser", "Flare", "Spear", "Wing", "Arc", "Sail", "Vortex", "Glider", "Dart",
+      "Prism", "Falcon", "Ribbon", "Spark", "Comet"
+    ];
+    const COSMIC_SHIP_COLORS = [
+      0x00e5ff, 0xff2d75, 0xffc800, 0x74ff8a, 0x9d6bff, 0xff6f3c, 0xd8f7ff, 0x2effd6,
+      0xfff4a3, 0x5aa7ff, 0xff42d0, 0x7cffc6, 0xb6b9ff, 0xff365c, 0x40ffef, 0xe9ff5a
+    ];
+    const seededSpeedValue = index => {
+      const x = Math.sin(index * 97.318 + 11.73) * 10000;
+      return x - Math.floor(x);
+    };
+    for (let i = 0; i < 50; i++) {
+      const id = 32 + i;
+      const speedRoll = seededSpeedValue(i + 1);
+      const maxSpeed = i === 49 ? 300000 : Math.round((10000 + speedRoll * 290000) / 10) * 10;
+      const color = COSMIC_SHIP_COLORS[i % COSMIC_SHIP_COLORS.length];
+      const accent = COSMIC_SHIP_COLORS[(i * 5 + 3) % COSMIC_SHIP_COLORS.length];
+      SPEED_TEST_VEHICLES.push({
+        id,
+        name: `${COSMIC_SHIP_PREFIXES[i % COSMIC_SHIP_PREFIXES.length]} ${COSMIC_SHIP_SUFFIXES[(i * 7) % COSMIC_SHIP_SUFFIXES.length]}`,
+        class: "Cosmic Speedcraft",
+        desc: "Experimental deep-space craft with an exotic silhouette, light-streak hull plating, and a randomized ultra-speed drive.",
+        maxSpeed,
+        accelTime: Math.round((22 + seededSpeedValue(i + 51) * 34) * 10) / 10,
+        color,
+        accent,
+        type: "cosmic",
+        variant: i
+      });
+    }
+    for (let i = 0; i < 100; i++) {
+      const id = 82 + i;
+      const speedRoll = seededSpeedValue(i + 301);
+      const maxSpeed = i === 99 ? 377777 : Math.round((30000 + speedRoll * 347777) / 10) * 10;
+      const color = COSMIC_SHIP_COLORS[(i * 3 + 5) % COSMIC_SHIP_COLORS.length];
+      const accent = COSMIC_SHIP_COLORS[(i * 7 + 2) % COSMIC_SHIP_COLORS.length];
+      SPEED_TEST_VEHICLES.push({
+        id,
+        name: `${COSMIC_SHIP_PREFIXES[(i * 2 + 4) % COSMIC_SHIP_PREFIXES.length]} ${COSMIC_SHIP_SUFFIXES[(i * 11 + 6) % COSMIC_SHIP_SUFFIXES.length]}`,
+        class: "Future Hypercraft",
+        desc: "Deep future prototype using relativistic navigation logic, thermal bloom shielding, and long-band light tunnel stabilization.",
+        maxSpeed,
+        accelTime: Math.round((18 + seededSpeedValue(i + 701) * 46) * 10) / 10,
+        color,
+        accent,
+        type: "cosmic",
+        variant: i + 50
+      });
+    }
+
+    const REAL_VEHICLE_PRODUCTION_YEARS = {
+      21: 2020,
+      22: 2024,
+      23: 2021,
+      24: 2020,
+      25: 2021,
+      26: 1964,
+      27: 1970,
+      28: 2005,
+      29: 1976,
+      30: 1985,
+      31: 1967
+    };
+    const futureProductionYear = vehicle => 2100 + Math.floor(seededSpeedValue(vehicle.id + 211) * 251);
+    SPEED_TEST_VEHICLES.forEach(vehicle => {
+      const realYear = REAL_VEHICLE_PRODUCTION_YEARS[vehicle.id];
+      vehicle.origin = realYear ? 'real' : 'future';
+      vehicle.productionYear = realYear || futureProductionYear(vehicle);
+      vehicle.displayDesc = `${vehicle.origin === 'real' ? 'REAL VEHICLE' : 'FUTURISTIC CONCEPT'} - Production year: ${vehicle.productionYear}. ${vehicle.desc}`;
+    });
+
+    const bySpeedAsc = vehicles => [...vehicles].sort((a, b) => a.maxSpeed - b.maxSpeed);
+    const SPEED_TEST_UNLOCK_GROUPS = [
+      { id: 'hypercars', label: 'Hypercars', vehicles: bySpeedAsc(SPEED_TEST_VEHICLES.slice(20, 25)) },
+      { id: 'military-aircraft', label: 'Military Aircraft', vehicles: bySpeedAsc(SPEED_TEST_VEHICLES.slice(25, 30)) },
+      { id: 'space-booster', label: 'Space Booster', vehicles: SPEED_TEST_VEHICLES.slice(30, 31) },
+      { id: 'sci-fi-rockets', label: 'Sci-Fi Rockets (1-20)', vehicles: bySpeedAsc(SPEED_TEST_VEHICLES.slice(0, 20)) },
+      { id: 'cosmic-speedcraft', label: 'Cosmic Speedcraft (150)', vehicles: bySpeedAsc(SPEED_TEST_VEHICLES.filter(v => v.type === 'cosmic')) }
+    ];
+    const FASTEST_SPEED_TEST_VEHICLE_IDS = new Set(bySpeedAsc(SPEED_TEST_VEHICLES).slice(-50).map(vehicle => vehicle.id));
+    const SPEED_TEST_SELECTION_CATEGORIES = [
+      { label: '◈ REAL VEHICLES', header: true },
+      ...SPEED_TEST_UNLOCK_GROUPS.slice(0, 3).map(group => ({ label: group.label, group })),
+      { label: '◈ FUTURISTIC / FICTIONAL VEHICLES', header: true },
+      ...SPEED_TEST_UNLOCK_GROUPS.slice(3).map(group => ({ label: group.label, group }))
+    ];
+    const VEHICLE_UNLOCK_GROUP_BY_ID = new Map();
+    SPEED_TEST_UNLOCK_GROUPS.forEach(group => {
+      group.vehicles.forEach((vehicle, index) => {
+        vehicle.unlockGroup = group.id;
+        vehicle.unlockOrder = index;
+        VEHICLE_UNLOCK_GROUP_BY_ID.set(vehicle.id, group);
+      });
+    });
+
+    class VehicleUnlocks {
+      static storageKey = 'space-ship-speedtest-unlocked-vehicles-v1';
+
+      static defaultIds() {
+        return SPEED_TEST_UNLOCK_GROUPS.map(group => group.vehicles[0]?.id).filter(Boolean);
+      }
+
+      static read() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(VehicleUnlocks.storageKey) || '[]');
+          return new Set([...VehicleUnlocks.defaultIds(), ...saved.map(Number).filter(Number.isFinite)]);
+        } catch {
+          return new Set(VehicleUnlocks.defaultIds());
+        }
+      }
+
+      static write(unlocked) {
+        localStorage.setItem(VehicleUnlocks.storageKey, JSON.stringify([...unlocked].sort((a, b) => a - b)));
+      }
+
+      static isUnlocked(vehicle) {
+        return VehicleUnlocks.read().has(vehicle.id);
+      }
+
+      static unlock(vehicle) {
+        if (!vehicle) return false;
+        const unlocked = VehicleUnlocks.read();
+        if (unlocked.has(vehicle.id)) return false;
+        unlocked.add(vehicle.id);
+        VehicleUnlocks.write(unlocked);
+        return true;
+      }
+
+      static unlockNextAfter(vehicle) {
+        const group = VEHICLE_UNLOCK_GROUP_BY_ID.get(vehicle?.id);
+        if (!group) return null;
+        const currentIndex = group.vehicles.findIndex(item => item.id === vehicle.id);
+        const next = group.vehicles[currentIndex + 1];
+        if (!next) return null;
+        const unlocked = VehicleUnlocks.read();
+        if (!unlocked.has(vehicle.id) || unlocked.has(next.id)) return null;
+        unlocked.add(next.id);
+        VehicleUnlocks.write(unlocked);
+        return next;
+      }
+    }
+
+    const SPEED_TEST_UNLOCK_QUESTIONS = [
+      { level: 'Grade 8', domain: 'space', difficulty: 1, question: "Who was the first human to travel into space?", choices: ["Neil Armstrong", "Yuri Gagarin", "Buzz Aldrin", "Alan Shepard"], answer: 1 },
+      { level: 'Grade 8', domain: 'physics', difficulty: 1, question: "What does acceleration describe?", choices: ["A change of velocity over time", "The color of a vehicle", "The mass of fuel only", "The name of an orbit"], answer: 0 },
+      { level: 'Grade 8', domain: 'space', difficulty: 1, question: "Which force keeps planets moving around the Sun?", choices: ["Gravity", "Friction", "Sound", "Air pressure"], answer: 0 },
+      { level: 'Grade 8', domain: 'physics', difficulty: 1, question: "What does km/h measure?", choices: ["Speed", "Mass", "Temperature", "Electric charge"], answer: 0 },
+      { level: 'Grade 8', domain: 'automotive', difficulty: 1, question: "What is the main job of a rear spoiler on a fast car?", choices: ["Create downforce for grip", "Store extra fuel", "Make the engine quieter", "Cool the headlights"], answer: 0 },
+      { level: 'Grade 8', domain: 'automotive', difficulty: 1, question: "Why do performance tires matter at high speed?", choices: ["They provide grip and stability", "They remove gravity", "They increase the speed limit sign", "They replace the brakes"], answer: 0 },
+      { level: 'Grade 8', domain: 'space', difficulty: 1, question: "Who was the first person to walk on the Moon?", choices: ["Neil Armstrong", "Yuri Gagarin", "John Glenn", "Michael Collins"], answer: 0 },
+      { level: 'Grade 8', domain: 'automotive', difficulty: 2, question: "What does engine displacement describe in a piston engine?", choices: ["Total cylinder volume", "Paint thickness", "Wheel diameter only", "Battery voltage"], answer: 0 },
+      { level: 'Grade 8', domain: 'automotive', difficulty: 2, question: "What does a turbocharger do?", choices: ["Compresses intake air", "Stores luggage", "Reduces tire pressure", "Turns headlights"], answer: 0 },
+      { level: 'Grade 8', domain: 'space', difficulty: 2, question: "Which vehicle in this game is a real Moon rocket?", choices: ["Saturn V", "F-22 Raptor", "Rimac Nevera", "SSC Tuatara"], answer: 0 },
+      { level: 'Grade 8', domain: 'automotive', difficulty: 2, question: "Which real car in this game is fully electric?", choices: ["Rimac Nevera", "SSC Tuatara", "Bugatti Bolide", "Koenigsegg Jesko Absolut"], answer: 0 },
+      { level: 'Grade 8', domain: 'physics', difficulty: 2, question: "What happens to air resistance when speed rises a lot?", choices: ["It becomes much stronger", "It disappears", "It turns into gravity", "It always stays the same"], answer: 0 },
+      { level: 'Grade 8', domain: 'automotive', difficulty: 2, question: "What happens in braking when a car slows down hard?", choices: ["Kinetic energy becomes heat", "The engine grows larger", "Gravity stops working", "The tires turn into fuel"], answer: 0 },
+      { level: 'Grade 8', domain: 'space', difficulty: 2, question: "What is escape velocity?", choices: ["The speed needed to leave a gravity well", "The speed of sound only", "The speed of a car leaving a garage", "A tire pressure unit"], answer: 0 },
+      { level: 'Grade 8', domain: 'automotive', difficulty: 2, question: "What engine layout is the Bugatti Bolide known for?", choices: ["8.0 L W16", "1.0 L inline-three", "Electric-only motor pack", "Two-cylinder boxer"], answer: 0 },
+      { level: 'Grade 8', domain: 'automotive', difficulty: 2, question: "What engine type is used by the Koenigsegg Jesko Absolut?", choices: ["Twin-turbo V8", "Steam piston engine", "Single-cylinder diesel", "Rotary-only engine"], answer: 0 },
+      { level: 'Grade 8', domain: 'physics', difficulty: 2, question: "Why are spacecraft noses and fast cars often streamlined?", choices: ["To reduce drag", "To increase mass", "To make light slower", "To remove inertia"], answer: 0 },
+      { level: 'Grade 8', domain: 'space', difficulty: 2, question: "What is an orbit?", choices: ["A curved path around a body caused by gravity", "A straight road on Earth", "A kind of tire", "A type of engine oil"], answer: 0 },
+      { level: 'Grade 8', domain: 'physics', difficulty: 2, question: "What is the sound barrier close to at sea level in the game milestones?", choices: ["About 1,235 km/h", "About 30 km/h", "About 377,777 km/h", "About 9,920 km/h"], answer: 0 },
+      { level: 'Grade 8', domain: 'automotive', difficulty: 2, question: "Why do hypercars use strong brakes and cooling?", choices: ["High speed creates huge heat loads", "The paint needs freezing", "Spoilers need fuel", "Windows create electricity"], answer: 0 },
+
+      { level: 'High School', domain: 'physics', difficulty: 3, question: "If a vehicle doubles its speed, how does its kinetic energy change?", choices: ["It becomes four times larger", "It becomes two times larger", "It becomes half as large", "It does not change"], answer: 0 },
+      { level: 'High School', domain: 'physics', difficulty: 3, question: "Mach number is the ratio between vehicle speed and what?", choices: ["Local speed of sound", "Local gravity", "Fuel mass", "Wheelbase"], answer: 0 },
+      { level: 'High School', domain: 'automotive', difficulty: 3, question: "What is the main tradeoff of adding more downforce?", choices: ["More grip but usually more drag", "More fuel but less mass", "Less grip and less stability", "No effect at all"], answer: 0 },
+      { level: 'High School', domain: 'space', difficulty: 3, question: "Why do rockets use stages?", choices: ["To drop empty mass and improve acceleration", "To change paint color in flight", "To avoid using engines", "To make gravity stronger"], answer: 0 },
+      { level: 'High School', domain: 'physics', difficulty: 3, question: "Centripetal acceleration in a turn increases strongly with which value?", choices: ["Speed squared", "Paint color", "Driver height", "Radio volume"], answer: 0 },
+      { level: 'High School', domain: 'space', difficulty: 3, question: "Why does a capsule heat up during atmospheric reentry?", choices: ["Air is compressed and energy is dissipated around it", "The Moon shines on it", "Fuel freezes instantly", "Gravity disappears"], answer: 0 },
+      { level: 'High School', domain: 'automotive', difficulty: 3, question: "What does an intercooler help do in a turbocharged engine?", choices: ["Cool compressed intake air", "Heat the tires", "Increase windshield size", "Charge the brakes"], answer: 0 },
+      { level: 'High School', domain: 'automotive', difficulty: 3, question: "What is the Rimac Nevera's basic powertrain idea?", choices: ["Four electric motors", "A carbureted V12 only", "A steam turbine", "A single bicycle chain"], answer: 0 },
+      { level: 'High School', domain: 'space', difficulty: 3, question: "Why can satellites keep falling around Earth without hitting it immediately?", choices: ["They have enough sideways velocity", "They have no mass", "They are pushed by clouds", "They stop gravity"], answer: 0 },
+      { level: 'High School', domain: 'physics', difficulty: 3, question: "What is dynamic pressure most closely related to?", choices: ["Air density and speed squared", "Paint color and wheel count", "Radio signal only", "Driver age only"], answer: 0 },
+      { level: 'High School', domain: 'automotive', difficulty: 3, question: "What is the largest engine displacement associated with the Bugatti Bolide's W16?", choices: ["8.0 liters", "2.0 liters", "5.0 liters", "12.8 liters"], answer: 0 },
+      { level: 'High School', domain: 'automotive', difficulty: 3, question: "What is the Hennessey Venom F5 engine commonly called?", choices: ["Fury twin-turbo V8", "Merlin V12", "J58 turbojet", "F-1 rocket engine"], answer: 0 },
+      { level: 'High School', domain: 'physics', difficulty: 3, question: "Why does steering feel harsher at extreme speed?", choices: ["Small direction changes create large lateral acceleration", "The mass of the vehicle becomes zero", "The road becomes magnetic", "Air resistance disappears"], answer: 0 },
+      { level: 'High School', domain: 'space', difficulty: 3, question: "Which mission carried humans to the first Moon landing?", choices: ["Apollo 11", "Apollo 10", "Gemini 4", "Vostok 1"], answer: 0 },
+      { level: 'High School', domain: 'automotive', difficulty: 3, question: "What does active aerodynamics adjust?", choices: ["Aero surfaces for drag or downforce", "Engine oil color", "Seat fabric density", "Planetary gravity"], answer: 0 },
+      { level: 'High School', domain: 'physics', difficulty: 3, question: "Why is a lighter vehicle often easier to accelerate?", choices: ["The same force changes its velocity more", "Light removes drag completely", "Mass creates fuel", "Weight makes time slower"], answer: 0 },
+      { level: 'High School', domain: 'space', difficulty: 3, question: "What does specific impulse compare in rocket engines?", choices: ["Propellant efficiency", "Window brightness", "Vehicle paint hardness", "Tire circumference"], answer: 0 },
+      { level: 'High School', domain: 'automotive', difficulty: 3, question: "Why do very fast cars need stable underbody airflow?", choices: ["To control lift and downforce", "To increase cabin noise", "To cool the radio", "To remove tire contact"], answer: 0 },
+      { level: 'High School', domain: 'physics', difficulty: 3, question: "What does momentum depend on?", choices: ["Mass and velocity", "Color and sound", "Temperature only", "Wheel count only"], answer: 0 },
+      { level: 'High School', domain: 'space', difficulty: 3, question: "What was Apollo 10 famous for in speed records?", choices: ["A very high crewed vehicle speed on return from the Moon", "First car on Mars", "First reusable booster landing", "First electric aircraft"], answer: 0 },
+
+      { level: 'University', domain: 'physics', difficulty: 4, question: "In special relativity, what happens to the Lorentz factor as speed approaches light speed?", choices: ["It grows without bound", "It becomes zero", "It becomes negative", "It equals tire pressure"], answer: 0 },
+      { level: 'University', domain: 'space', difficulty: 4, question: "What is the Oberth effect?", choices: ["A burn at high orbital speed gives more useful energy gain", "A spoiler effect on race cars", "A method for cooling brake discs", "A radio delay inside tunnels"], answer: 0 },
+      { level: 'University', domain: 'physics', difficulty: 4, question: "The Tsiolkovsky rocket equation links delta-v mainly to exhaust velocity and what?", choices: ["Mass ratio", "Paint color", "Wheel diameter", "Cabin temperature"], answer: 0 },
+      { level: 'University', domain: 'automotive', difficulty: 4, question: "Why can a high-downforce car corner faster but lose top speed?", choices: ["Downforce improves grip but the aero devices add drag", "Downforce removes engine torque", "Spoilers reduce vehicle mass to zero", "Tires become frictionless"], answer: 0 },
+      { level: 'University', domain: 'physics', difficulty: 4, question: "Why does compressibility matter near Mach 1?", choices: ["Pressure waves can no longer move ahead of the vehicle smoothly", "Gravity reverses direction", "Fuel becomes solid metal", "Tires stop rotating"], answer: 0 },
+      { level: 'University', domain: 'space', difficulty: 4, question: "What is a Hohmann transfer used for?", choices: ["Efficiently moving between two circular orbits", "Measuring tire tread", "Increasing W16 displacement", "Reducing a car's wheelbase"], answer: 0 },
+      { level: 'University', domain: 'automotive', difficulty: 4, question: "What does tire slip ratio describe under acceleration or braking?", choices: ["Difference between wheel speed and vehicle speed", "Engine cylinder count", "Spoiler height only", "Battery color"], answer: 0 },
+      { level: 'University', domain: 'physics', difficulty: 4, question: "At very high speed, convective heating on a body depends strongly on what?", choices: ["Velocity and atmospheric density", "Paint name only", "Radio frequency only", "Number of seats"], answer: 0 },
+      { level: 'University', domain: 'space', difficulty: 4, question: "Why are ion engines efficient but not good for launch from Earth?", choices: ["High specific impulse but low thrust", "They require wooden propellers", "They cannot work in vacuum", "They create too much tire grip"], answer: 0 },
+      { level: 'University', domain: 'automotive', difficulty: 4, question: "What is the SSC Tuatara engine layout most associated with?", choices: ["Twin-turbo V8", "Naturally aspirated inline-four", "Electric-only four-motor system", "Radial aircraft engine"], answer: 0 },
+      { level: 'University', domain: 'physics', difficulty: 4, question: "What does Reynolds number help predict?", choices: ["Flow behavior such as laminar or turbulent tendency", "Moon phase", "Engine firing order only", "Unlock order only"], answer: 0 },
+      { level: 'University', domain: 'space', difficulty: 4, question: "Why does a gravity assist change a probe's heliocentric speed?", choices: ["It exchanges energy with a moving planet", "It turns gravity off", "It burns no fuel because mass is gone", "It uses tire friction"], answer: 0 },
+      { level: 'University', domain: 'automotive', difficulty: 4, question: "Why do electric hypercars often launch very hard from low speed?", choices: ["Electric motors can deliver strong torque immediately", "They have no mass", "They ignore tire grip", "Their spoilers push them forward"], answer: 0 },
+      { level: 'University', domain: 'physics', difficulty: 4, question: "Which quantity is conserved in an ideal isolated collision system?", choices: ["Momentum", "Paint gloss", "Top speed rating", "Spoiler angle"], answer: 0 },
+      { level: 'University', domain: 'space', difficulty: 4, question: "What does apoapsis mean?", choices: ["The farthest point in an orbit from the central body", "A tire temperature limit", "The closest point in an engine cycle", "A type of spoiler"], answer: 0 },
+      { level: 'University', domain: 'automotive', difficulty: 4, question: "What is brake fade?", choices: ["Loss of braking performance from heat", "A paint transition", "A turbocharger speed limit", "A lower orbit"], answer: 0 },
+      { level: 'University', domain: 'physics', difficulty: 4, question: "Why is reaching light speed impossible for a massive vehicle under known physics?", choices: ["Required energy tends toward infinity", "The vehicle runs out of paint", "The sound barrier blocks it forever", "Gravity becomes fuel"], answer: 0 },
+      { level: 'University', domain: 'space', difficulty: 4, question: "What is periapsis?", choices: ["The closest point in an orbit to the central body", "The farthest point on a race track", "A tire sidewall mark", "A transmission gear"], answer: 0 },
+      { level: 'University', domain: 'automotive', difficulty: 4, question: "Why can underbody tunnels create downforce?", choices: ["They manage pressure and accelerate airflow under the car", "They add fuel mass", "They make gravity reverse", "They turn brakes into wings"], answer: 0 },
+      { level: 'University', domain: 'physics', difficulty: 4, question: "What frame of reference is needed to state a velocity precisely?", choices: ["A chosen observer or coordinate frame", "A paint catalog", "A tire brand", "A random unlock group"], answer: 0 },
+      { level: 'University', domain: 'physics', difficulty: 5, question: "For constant proper acceleration, what does a relativistic speed curve do as it approaches c?", choices: ["It asymptotically approaches c without crossing it", "It crosses c easily", "It drops to zero instantly", "It becomes unrelated to time"], answer: 0 },
+      { level: 'University', domain: 'space', difficulty: 5, question: "In orbital mechanics, what does inclination describe?", choices: ["Tilt of an orbital plane relative to a reference plane", "Engine displacement", "Brake disc diameter", "Spoiler chord only"], answer: 0 },
+      { level: 'University', domain: 'automotive', difficulty: 5, question: "Why can too much rear downforce create balance problems?", choices: ["It can shift aero balance and cause understeer", "It removes front mass", "It deletes tire friction", "It lowers engine displacement"], answer: 0 },
+      { level: 'University', domain: 'physics', difficulty: 5, question: "What is the key reason shock waves form around supersonic vehicles?", choices: ["Disturbances cannot propagate upstream faster than the vehicle", "The vehicle has no inertia", "The engine is electric", "Gravity becomes sideways"], answer: 0 },
+      { level: 'University', domain: 'space', difficulty: 5, question: "What does delta-v budget mean?", choices: ["Total planned velocity change a mission can spend", "Maximum tire speed", "Paint weight allowance", "Cabin sound level"], answer: 0 },
+      { level: 'University', domain: 'automotive', difficulty: 5, question: "Why do high-output turbo engines need careful charge-air temperature control?", choices: ["Hot intake air increases knock risk and reduces density", "Cold air removes spark plugs", "The spoiler needs warm air", "Brake pads require boost"], answer: 0 },
+      { level: 'University', domain: 'physics', difficulty: 5, question: "At relativistic speed, what happens to time measured aboard compared with a stationary observer?", choices: ["It runs slower relative to that observer", "It runs infinitely faster immediately", "It stops only below Mach 1", "It depends on tire pressure"], answer: 0 },
+      { level: 'University', domain: 'space', difficulty: 5, question: "Why is the Parker Solar Probe extremely fast near the Sun?", choices: ["It falls deep into the Sun's gravity well and uses repeated Venus assists", "It has road tires", "It launches from the Moon every orbit", "It reaches c with chemical fuel"], answer: 0 },
+      { level: 'University', domain: 'automotive', difficulty: 5, question: "What is torque vectoring useful for in performance vehicles?", choices: ["Controlling yaw by varying drive torque at wheels", "Changing engine displacement", "Measuring orbital inclination", "Making drag vanish"], answer: 0 },
+      { level: 'University', domain: 'physics', difficulty: 5, question: "Why does thermal protection become a design limit for extreme atmospheric speed?", choices: ["Heat flux can exceed material limits", "Sound waves become cold", "Mass becomes negative", "Spoilers stop all heating"], answer: 0 }
+    ];
+    const FAST_UNLOCK_QUESTIONS = SPEED_TEST_UNLOCK_QUESTIONS.filter(question => question.level === 'High School' || question.level === 'University');
+    const STANDARD_UNLOCK_QUESTIONS = SPEED_TEST_UNLOCK_QUESTIONS.filter(question => question.level === 'Grade 8');
+
+    const SPEED_TEST_MILESTONES = [
+      { speed: 1000, text: "Typical jet cruising speed" },
+      { speed: 1235, text: "Sound barrier broken" },
+      { speed: 2180, text: "Concorde Mach 2" },
+      { speed: 3529, text: "SR-71 Blackbird jet speed record" },
+      { speed: 7274, text: "X-15: hypersonic flight begins" },
+      { speed: 27740, text: "First cosmic velocity" },
+      { speed: 28000, text: "Capsule atmospheric reentry" },
+      { speed: 40320, text: "Second cosmic velocity" },
+      { speed: 46660, text: "Apollo 10: human vehicle speed record" },
+      { speed: 57890, text: "New Horizons at Pluto" },
+      { speed: 61200, text: "Third cosmic velocity" },
+      { speed: 100000, text: "Earth orbital speed around the Sun" },
+      { speed: 252792, text: "Helios 2 historic probe record" },
+      { speed: 300000, text: "Light speed reached" },
+      { speed: 635266, text: "Parker Solar Probe" },
+      { speed: 800000, text: "Solar System around the Milky Way center" },
+      { speed: 1080000, text: "Fast solar wind" },
+      { speed: 2160000, text: "Fourth cosmic velocity" },
+      { speed: 1079252848, text: "Speed of light in vacuum" }
+    ];
+
+    const ART_CONCEPT_GALLERIES = [
+      {
+        id: 'tunels',
+        label: 'Tunels',
+        items: [
+          '704191473_4488491744738150_7548856521691310131_n.jpg',
+          '705298464_4488491341404857_8886234882382549602_n.jpg',
+          '705860110_4488491498071508_166123027538244059_n.jpg',
+          '706464419_4488491401404851_6360700145049656836_n.jpg',
+          '737422123_4532199670367357_3061247540874635851_n.jpg',
+          '737569179_4532197857034205_6702347694703197891_n.jpg',
+          '737721712_4532197723700885_3296980498905245000_n.jpg',
+          '738116864_4532199003700757_4445431349117526625_n.jpg',
+          '738116865_4532199530367371_1989823333269863683_n.jpg',
+          '738335184_4532198737034117_4440113890439684818_n.jpg',
+          '738625393_4532198420367482_6374074312169279362_n.jpg',
+          '738725275_4532199443700713_2229563869250302421_n.jpg',
+          '738853997_4532198520367472_7940205097592902853_n.jpg',
+          '739107029_4532199600367364_1208612572083244145_n.jpg',
+          '739165572_4532199080367416_2655881073975706487_n.jpg',
+          '739200053_4532199207034070_1973780059725827592_n.jpg',
+          '739313120_4532198333700824_5905950517056705150_n.jpg',
+          '739363088_4532198250367499_7589526884963148454_n.jpg',
+          '740276541_4532199333700724_9050748155488106265_n.jpg',
+          '740276546_4532198130367511_8252900462957532744_n.jpg'
+        ].map(file => ({ src: `Kamil_Art_Concept/${file}`, name: file }))
+      },
+      {
+        id: 'vehicles',
+        label: 'Futuristic vehicle concepts',
+        items: [
+          '704732275_4488491641404827_2932844773205889893_n.jpg',
+          '706035761_4488491558071502_6088885096274771391_n.jpg',
+          '737642975_4532197943700863_1863896023242488715_n.jpg',
+          '740917562_4532198870367437_1936878983522595174_n.jpg'
+        ].map(file => ({ src: `Kamil_Art_Concept/Futuristic vehicle concepts/${file}`, name: file }))
+      },
+      {
+        id: 'hand-tunels',
+        label: 'Hand drawings tunel concept',
+        items: [
+          'Clipboard_07-20-2026_01.jpg',
+          'Clipboard_07-20-2026_02.jpg',
+          'Clipboard_07-20-2026_03.jpg'
+        ].map(file => ({ src: `Kamil_Art_Concept/Hand drawings tunel concept/${file}`, name: file }))
+      }
+    ];
+
     class ScoreClient {
       static apiBase = 'https://space-ship-sf-kd.mechagdynia2.workers.dev';
       static storageKey = 'space-ship-sf-kd-local-scores';
@@ -794,6 +1297,38 @@
       }
     }
 
+    class VisitorClient {
+      static localKey = 'space-ship-sf-kd-local-visitor-id';
+
+      static getLocalVisitorId() {
+        let id = localStorage.getItem(VisitorClient.localKey);
+        if (!id) {
+          id = `visitor-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+          localStorage.setItem(VisitorClient.localKey, id);
+        }
+        return id;
+      }
+
+      static async count() {
+        const localVisitorId = VisitorClient.getLocalVisitorId();
+        const endpoints = [`${ScoreClient.apiBase}/api/visitors`, '/api/visitors'];
+        for (const endpoint of endpoints) {
+          try {
+            const response = await fetch(endpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify({ localVisitorId })
+            });
+            if (!response.ok) throw new Error(`Visitors unavailable (${response.status})`);
+            const data = await response.json();
+            const visitors = Math.max(0, Math.floor(Number(data.visitors) || 0));
+            return { visitors, localOnly: false };
+          } catch {}
+        }
+        return { visitors: 1, localOnly: true };
+      }
+    }
+
     // ═══════════════════════════════════════════════
     // TUNNEL SHADER — Motion Blur GLSL
     // ═══════════════════════════════════════════════
@@ -816,10 +1351,11 @@
       varying vec3 vWorldPos;
       varying vec2 vUv;
       void main() {
-        // Speed factor: 0 at standstill → 1.0 at 900+ km/h
         float speedFactor = smoothstep(50.0, 900.0, uSpeed);
         float highSpeed = smoothstep(600.0, 900.0, uSpeed);
         float extremeSpeed = smoothstep(900.0, 1500.0, uSpeed);
+        float cosmicSpeed = smoothstep(10000.0, 120000.0, uSpeed);
+        float lightSpeed = smoothstep(220000.0, 300000.0, uSpeed);
 
         // PCB-like panels fixed to tunnel geometry. Segment movement creates the speed illusion.
         float squarePattern = 0.0;
@@ -833,10 +1369,11 @@
           float traceV = (1.0 - smoothstep(0.012, 0.028, abs(panel.x - 0.68))) * step(0.18, panel.y) * step(panel.y, 0.74);
           float nodeA = 1.0 - smoothstep(0.035, 0.07, length(panel - vec2(0.26, 0.52)));
           float nodeB = 1.0 - smoothstep(0.03, 0.06, length(panel - vec2(0.68, 0.28)));
-          float detailFade = 1.0 - highSpeed * 0.55;
+          float detailFade = 1.0 - highSpeed * 0.45 - cosmicSpeed * 0.32;
           squarePattern = (border * 0.9 + max(traceH, traceV) * 0.42 + max(nodeA, nodeB) * 0.55) * detailFade;
           float blurBand = 1.0 - smoothstep(0.06, 0.36, abs(fract(vUv.y * 4.0 + uTime * uSpeed * 0.0007) - 0.5));
-          motionBlur = blurBand * highSpeed * (0.55 + extremeSpeed * 0.35);
+          float lightBand = 1.0 - smoothstep(0.015, 0.32, abs(fract(vUv.x * 7.0 + vUv.y * 0.34) - 0.5));
+          motionBlur = blurBand * highSpeed * (0.55 + extremeSpeed * 0.35) + lightBand * cosmicSpeed * (0.28 + lightSpeed * 0.82);
         }
 
         // Neon edge glow with speed-reactive pulse
@@ -849,18 +1386,24 @@
         // so route scenery behind the tunnel remains visible at speed.
         vec3 frameColor = mix(uAccent * 0.42, vec3(1.0), 0.35);
         vec3 finalColor = baseColor + accentLine + squarePattern * frameColor;
-        finalColor += uAccent * motionBlur * 0.2;
+        finalColor += uAccent * motionBlur * (0.2 + cosmicSpeed * 1.15);
+
+        float stripe = 1.0 - smoothstep(0.035, 0.44, abs(fract(vUv.x * 10.0 + vUv.y * 0.18) - 0.5));
+        vec3 darkBand = mix(uColor * 0.02, vec3(0.0), 0.72);
+        vec3 brightBand = mix(uAccent * 0.72, vec3(1.0), lightSpeed * 0.42);
+        vec3 lightTunnel = mix(darkBand, brightBand, stripe);
+        finalColor = mix(finalColor, lightTunnel, lightSpeed * 0.88);
 
         // FOV-like vignette darkening at extreme speed (tunnel focus effect)
         float vignette = 1.0 - extremeSpeed * 0.3 * smoothstep(0.3, 0.7, length(vUv - 0.5));
         finalColor *= vignette;
 
         float windowAlpha = uIsBlackSquare < -0.5 ? 0.025 : (uIsBlackSquare > 0.5 ? 0.045 : 0.52);
-        float frameAlpha = squarePattern * (0.42 + highSpeed * 0.28);
+        float frameAlpha = squarePattern * (0.42 + highSpeed * 0.28) + stripe * lightSpeed * 0.72;
         float edgeAlpha = edgeGlow * 0.8;
-        float streakAlpha = motionBlur * 0.22;
+        float streakAlpha = motionBlur * (0.22 + cosmicSpeed * 0.36);
         float minAlpha = uIsBlackSquare < -0.5 ? 0.02 : 0.045;
-        float alpha = clamp(windowAlpha + frameAlpha + edgeAlpha + streakAlpha, minAlpha, 0.82);
+        float alpha = clamp(windowAlpha + frameAlpha + edgeAlpha + streakAlpha, minAlpha, 0.92);
         gl_FragColor = vec4(finalColor, alpha);
       }
     `;
@@ -898,6 +1441,14 @@
         this.selectedTunnel = 'random';
         this.editorOptions = { figure: 1, size: 2, shapeX: 1, shapeY: 1, opacity: 1 };
         this.editorPanel = document.getElementById('tunnel-editor');
+        this.quizPanel = document.getElementById('vehicle-unlock-quiz');
+        this.quizTarget = document.getElementById('quiz-target');
+        this.quizQuestion = document.getElementById('quiz-question');
+        this.quizOptions = document.getElementById('quiz-options');
+        this.quizStatus = document.getElementById('quiz-status');
+        this.quizVehicle = null;
+        this.activeQuizQuestion = null;
+        this.activeQuizChoices = [];
         this._bind();
       }
 
@@ -921,6 +1472,19 @@
             document.querySelectorAll('#tunnel-selector .route-btn').forEach(tunnelBtn => tunnelBtn.classList.toggle('active', tunnelBtn === btn));
             this.updateEditorPanel();
           });
+        });
+        document.getElementById('btn-quiz-close').addEventListener('click', () => {
+          this.sound.playClick();
+          this.closeUnlockQuiz();
+        });
+        this.quizPanel.addEventListener('click', e => {
+          if (e.target === this.quizPanel) this.closeUnlockQuiz();
+        });
+        window.addEventListener('keydown', e => {
+          if (e.key === 'Escape' && this.quizPanel.style.display === 'flex') {
+            e.preventDefault();
+            this.closeUnlockQuiz();
+          }
         });
         this.bindEditorControls();
       }
@@ -957,34 +1521,92 @@
         return { ...this.editorOptions };
       }
 
-      show() {
-        this.grid.innerHTML = '';
-        const categories = [
-          { label: '◈ Sci-Fi Rockets (1-20)', ids: () => SPEED_TEST_VEHICLES.slice(0, 20) },
-          { label: '◈ Hypercars', ids: () => SPEED_TEST_VEHICLES.slice(20, 25) },
-          { label: '◈ Military Aircraft', ids: () => SPEED_TEST_VEHICLES.slice(25, 30) },
-          { label: '◈ Space Booster', ids: () => SPEED_TEST_VEHICLES.slice(30, 31) },
-        ];
-        const maxSpeed = Math.max(...SPEED_TEST_VEHICLES.map(v => v.maxSpeed));
+      pickUnlockQuestion(vehicle) {
+        const pool = FASTEST_SPEED_TEST_VEHICLE_IDS.has(vehicle?.id) ? FAST_UNLOCK_QUESTIONS : STANDARD_UNLOCK_QUESTIONS;
+        const offset = vehicle ? vehicle.id * 3 : 0;
+        const index = Math.floor(Math.random() * pool.length + offset) % pool.length;
+        return pool[index] || SPEED_TEST_UNLOCK_QUESTIONS[0];
+      }
 
-        for (const cat of categories) {
+      openUnlockQuiz(vehicle) {
+        this.quizVehicle = vehicle;
+        this.activeQuizQuestion = this.pickUnlockQuestion(vehicle);
+        this.quizTarget.textContent = `Unlock attempt: ${vehicle.name}`;
+        this.quizQuestion.textContent = this.activeQuizQuestion.question;
+        this.quizStatus.textContent = `${this.activeQuizQuestion.level} - Choose one answer: A, B, C or D`;
+        this.quizOptions.innerHTML = '';
+        this.activeQuizChoices = this.activeQuizQuestion.choices
+          .map((text, index) => ({ text, correct: index === this.activeQuizQuestion.answer }))
+          .sort(() => Math.random() - 0.5);
+        this.activeQuizChoices.forEach((choice, index) => {
+          const btn = document.createElement('button');
+          btn.className = 'quiz-option';
+          btn.textContent = `${String.fromCharCode(65 + index)}. ${choice.text}`;
+          btn.addEventListener('click', () => this.answerUnlockQuiz(index, btn));
+          this.quizOptions.appendChild(btn);
+        });
+        this.quizPanel.style.display = 'flex';
+      }
+
+      closeUnlockQuiz() {
+        this.quizPanel.style.display = 'none';
+        this.quizVehicle = null;
+        this.activeQuizQuestion = null;
+        this.activeQuizChoices = [];
+      }
+
+      answerUnlockQuiz(index, selectedButton) {
+        if (!this.activeQuizQuestion || !this.quizVehicle) return;
+        [...this.quizOptions.children].forEach((btn, optionIndex) => {
+          btn.disabled = true;
+          if (this.activeQuizChoices[optionIndex]?.correct) btn.classList.add('correct');
+        });
+        if (!this.activeQuizChoices[index]?.correct) {
+          selectedButton.classList.add('wrong');
+          this.quizStatus.textContent = 'Wrong answer. Close and try another quiz question.';
+          return;
+        }
+        VehicleUnlocks.unlock(this.quizVehicle);
+        this.quizStatus.textContent = `${this.quizVehicle.name} unlocked!`;
+        window.setTimeout(() => {
+          this.closeUnlockQuiz();
+          this.show(true);
+        }, 750);
+      }
+
+      show(preserveScroll = false) {
+        const previousScroll = this.panel.scrollTop;
+        this.grid.innerHTML = '';
+        const maxSpeed = Math.max(...SPEED_TEST_VEHICLES.map(v => v.maxSpeed));
+        const unlockedVehicles = VehicleUnlocks.read();
+
+        for (const cat of SPEED_TEST_SELECTION_CATEGORIES) {
           const label = document.createElement('div');
           label.className = 'cat-label';
           label.textContent = cat.label;
           this.grid.appendChild(label);
 
-          for (const v of cat.ids()) {
+          if (cat.header) continue;
+          const vehicles = cat.group.vehicles;
+          if (!vehicles.length) continue;
+
+          for (const v of vehicles) {
+            const unlocked = unlockedVehicles.has(v.id);
             const card = document.createElement('div');
-            card.className = 'ship-card';
+            card.className = `ship-card${unlocked ? '' : ' locked'}`;
             const speedPct = Math.round((v.maxSpeed / maxSpeed) * 100);
             const accelBarColor = v.type === 'car' ? '#00ff88' : v.type === 'jet' ? '#ffaa00' : v.type === 'booster' ? '#ff4444' : '#00e5ff';
             const bodyHex = `#${v.color.toString(16).padStart(6,'0')}`;
             const accentHex = `#${v.accent.toString(16).padStart(6,'0')}`;
+            const originLabel = v.origin === 'real' ? 'REAL' : 'FUTURISTIC';
             card.innerHTML = `
+              ${unlocked ? '' : '<div class="ship-lock">LOCKED</div>'}
               <div class="vehicle-swatch" style="background:linear-gradient(90deg, ${bodyHex} 0%, ${bodyHex} 42%, ${accentHex} 42%, ${accentHex} 64%, rgba(255,255,255,0.8) 64%, rgba(255,255,255,0.8) 70%, ${bodyHex} 70%)"></div>
               <div class="ship-name" style="color:${bodyHex}">${v.name}</div>
               <div class="ship-class">${v.class} — #${v.id}</div>
-              <div class="ship-desc">${v.desc}</div>
+              <div class="ship-origin ${v.origin === 'real' ? 'real' : 'future'}">${originLabel} / ${v.productionYear}</div>
+              <div class="ship-desc">${v.displayDesc}</div>
+              ${unlocked ? '' : '<div class="unlock-note">Reach 90% on previous vehicle or pass quiz</div>'}
               <div class="ship-stats">
                 <div class="stat">TOP SPEED: <span>${v.maxSpeed} km/h</span></div>
                 <div class="stat">ACCEL (0-200): <span>${v.accelTime}s</span></div>
@@ -992,19 +1614,31 @@
               <div class="stat-bar"><div class="stat-bar-fill" style="width:${speedPct}%;background:${accelBarColor}"></div></div>
             `;
             card.addEventListener('mouseenter', () => this.sound.playHover());
-            card.addEventListener('click', () => { this.sound.playClick(); this.selectedId = v.id; this.onSelect(v); });
+            card.addEventListener('click', () => {
+              this.sound.playClick();
+              if (!VehicleUnlocks.isUnlocked(v)) {
+                this.openUnlockQuiz(v);
+                card.animate?.([{ transform: 'translateX(-3px)' }, { transform: 'translateX(3px)' }, { transform: 'translateX(0)' }], { duration: 160 });
+                return;
+              }
+              this.selectedId = v.id;
+              this.onSelect(v);
+            });
             this.grid.appendChild(card);
           }
         }
 
         this.panel.style.display = 'flex';
         this.updateEditorPanel();
-        this.panel.scrollTop = 0;
+        this.panel.scrollTop = preserveScroll ? previousScroll : 0;
       }
 
-      hide() { this.panel.style.display = 'none'; }
+      hide() {
+        this.closeUnlockQuiz();
+        this.panel.style.display = 'none';
+      }
       onSelect(vehicle) {
-        const routes = ['basic', 'forest', 'mountains', 'city'];
+        const routes = SPEED_TEST_ROUTES;
         const tunnels = TUNNEL_RANDOM_STYLE_IDS;
         const route = this.selectedRoute === 'random' ? routes[Math.floor(Math.random() * routes.length)] : this.selectedRoute;
         const tunnel = this.selectedTunnel === 'random' ? tunnels[Math.floor(Math.random() * tunnels.length)] : this.selectedTunnel;
@@ -1058,11 +1692,37 @@
       'block-black': { label: 'SQUARE BLACK KAMIL D. PROJECT', accent: 0x3a465a, topAccent: 0x536072, panel: 0x000000, panelOpacity: 0.83, shape: 'square', layout: 'large' },
       'block-white': { label: 'SQUARE WHITE KAMIL D. PROJECT', accent: 0xf4fbff, topAccent: 0xffffff, panel: 0xdcecff, panelOpacity: 0.7, shape: 'square', layout: 'large' },
       'block-violet': { label: 'SQUARE VIOLET KAMIL D. PROJECT', accent: 0xff4dff, topAccent: 0xbc69ff, panel: 0x21002d, panelOpacity: 0.75, shape: 'square', layout: 'large' },
+      'qube-floor': { label: 'QUBE STYLE FLOR KAMIL D. PROJECT', accent: 0x74ff8a, topAccent: 0x00dfff, panel: 0x123f1f, panelOpacity: 0.58, shape: 'square', layout: 'large', floorCubes: 1 },
+      'qube-floor-lite': { label: 'QUBE STYLE FLOR HALF DENSITY KAMIL D. PROJECT', accent: 0x74ff8a, topAccent: 0x00dfff, panel: 0x123f1f, panelOpacity: 0.48, shape: 'square', layout: 'large', floorCubes: 0.5 },
+      'direct-concept-01': { label: 'KAMI D. DIRECT CONCEPT 01', accent: 0x00e5ff, topAccent: 0x7dfbff, panel: 0x02070b, panelOpacity: 0.84, shape: 'rect', layout: 'direct', wallColor: 0xb8dce8, floor: 0x68aeb7, wallMode: 0.0 },
+      'direct-concept-02': { label: 'KAMI D. DIRECT CONCEPT 02', accent: 0xeafcff, topAccent: 0xffffff, panel: 0x000000, panelOpacity: 0.9, shape: 'rect', layout: 'direct-thin', wallColor: 0xf4fbff, floor: 0xd7edf2, wallMode: 0.0 },
+      'direct-concept-03': { label: 'KAMI D. DIRECT CONCEPT 03', accent: 0xdff7ff, topAccent: 0xffffff, panel: 0x000000, panelOpacity: 0.88, shape: 'rect', layout: 'direct-wide', wallColor: 0xe8f5fb, floor: 0xd4e8ef, wallMode: 0.0 },
+      'direct-concept-04': { label: 'KAMI D. DIRECT CONCEPT 04', accent: 0xf7f0df, topAccent: 0xffffff, panel: 0x050505, panelOpacity: 0.9, shape: 'rect', layout: 'direct-bold', wallColor: 0xf3eee3, floor: 0xd8d2c5, wallMode: 0.0 },
+      'direct-concept-05': { label: 'KAMI D. DIRECT CONCEPT 05', accent: 0x37e9ff, topAccent: 0xbfffff, panel: 0x00101a, panelOpacity: 0.78, shape: 'rect', layout: 'direct-cyan', wallColor: 0xc7eef3, floor: 0xb4dce4, wallMode: 0.0 },
+      'direct-concept-06': { label: 'KAMI D. DIRECT CONCEPT 06', accent: 0x00dfff, topAccent: 0xffffff, panel: 0x020508, panelOpacity: 0.86, shape: 'rect', layout: 'direct-city', wallColor: 0xdcecf2, floor: 0xc4d3d8, wallMode: 0.0 },
+      'direct-concept-07': { label: 'KAMI D. DIRECT CONCEPT 07', accent: 0x62e8ff, topAccent: 0xffb070, panel: 0x020508, panelOpacity: 0.82, shape: 'circle', layout: 'direct-round', wallColor: 0xbfd6dc, floor: 0x8fb4bc, wallMode: 0.0 },
       editor: { label: 'TUNNEL EDITOR KAMIL D. PROJECT', accent: 0x00e5ff, topAccent: 0xff35ff, panel: 0x120018, panelOpacity: 0.7, shape: 'editor', layout: 'editor' }
     };
     const TUNNEL_STYLE_IDS = Object.keys(TUNNEL_STYLE_CONFIGS);
-    const TUNNEL_RANDOM_STYLE_IDS = TUNNEL_STYLE_IDS.filter(id => id !== 'editor');
+    const DIRECT_TUNNEL_STYLE_IDS = TUNNEL_STYLE_IDS.filter(id => id.startsWith('direct-concept'));
+    const TUNNEL_RANDOM_STYLE_IDS = [
+      ...TUNNEL_STYLE_IDS.filter(id => id !== 'editor' && !id.startsWith('direct-concept')),
+      ...DIRECT_TUNNEL_STYLE_IDS
+    ];
     const TUNNEL_STYLE_LABELS = Object.fromEntries(TUNNEL_STYLE_IDS.map(id => [id, TUNNEL_STYLE_CONFIGS[id].label]));
+    const SPEED_TEST_ROUTES = ['basic-white', 'basic-blue', 'basic-green', 'basic-desert', 'forest', 'mountains', 'city'];
+    const BASIC_BIOME_CONFIGS = {
+      'basic-white': { label: 'Basic White', sky: 0xeaf6ff, horizon: 0xc9dce8, floor: 0xd6e8ef, accent: 0xeafcff },
+      'basic-blue': { label: 'Basic Blue', sky: 0x0c2d58, horizon: 0x061a36, floor: 0x174a72, accent: 0x00dfff },
+      'basic-green': { label: 'Basic Green', sky: 0x123f2f, horizon: 0x0d2d20, floor: 0x1f6b2f, accent: 0x74ff8a },
+      'basic-desert': { label: 'Basic Desert', sky: 0xe9c98d, horizon: 0xb98a4a, floor: 0xc89a55, accent: 0xffcf75 }
+    };
+    const SPEED_TEST_ROUTE_LABELS = {
+      ...Object.fromEntries(Object.entries(BASIC_BIOME_CONFIGS).map(([id, cfg]) => [id, cfg.label])),
+      forest: 'Forest',
+      mountains: 'Mountains',
+      city: 'City'
+    };
 
     class TunnelEnvironment {
       constructor(scene, theme = 'basic', quality = 'high', tunnelStyle = 'basic', tunnelOptions = null) {
@@ -1102,10 +1762,23 @@
       getTunnelStyleConfig() {
         const config = TUNNEL_STYLE_CONFIGS[this.tunnelStyle] || TUNNEL_STYLE_CONFIGS.basic;
         const editorOpacity = 0.7 + ((this.tunnelOptions.opacity - 1) / 9) * 0.3;
+        const basicBiome = BASIC_BIOME_CONFIGS[this.theme];
+        const biomeFloor = {
+          basic: 0x07091f,
+          'basic-white': BASIC_BIOME_CONFIGS['basic-white'].floor,
+          'basic-blue': BASIC_BIOME_CONFIGS['basic-blue'].floor,
+          'basic-green': BASIC_BIOME_CONFIGS['basic-green'].floor,
+          'basic-desert': BASIC_BIOME_CONFIGS['basic-desert'].floor,
+          forest: 0x1f6b2f,
+          mountains: 0x687160,
+          city: this.cityIsNight ? 0x12213a : 0x8fa0ab
+        }[this.theme] ?? 0x07091f;
         return {
           ...config,
+          accent: this.tunnelStyle === 'basic' && basicBiome ? basicBiome.accent : config.accent,
+          topAccent: this.tunnelStyle === 'basic' && basicBiome ? basicBiome.accent : config.topAccent,
           panelOpacity: this.tunnelStyle === 'editor' ? editorOpacity : config.panelOpacity,
-          floor: config.floor ?? (this.theme === 'basic' ? 0x07091f : 0x101426)
+          floor: basicBiome ? biomeFloor : (config.floor ?? biomeFloor)
         };
       }
 
@@ -1194,6 +1867,33 @@
           group.add(panel);
         };
 
+        if (String(config.layout).startsWith('direct')) {
+          const zSlots = this.lowQuality ? [-segLen * 0.24, segLen * 0.24] : [-segLen * 0.36, -segLen * 0.12, segLen * 0.12, segLen * 0.36];
+          const ceilingZSlots = zSlots;
+          const bold = config.layout === 'direct-bold';
+          const thin = config.layout === 'direct-thin';
+          const wide = config.layout === 'direct-wide';
+          const round = config.layout === 'direct-round';
+          const sideWidth = bold ? 1.62 : wide ? 1.35 : thin ? 0.78 : 1.08;
+          const sideHeight = bold ? 0.92 : thin ? 0.52 : 0.72;
+          const floorWidth = bold ? 2.0 : thin ? 1.05 : 1.42;
+          const floorHeight = bold ? 0.96 : thin ? 0.58 : 0.74;
+          const panelGeo = () => round
+            ? new THREE.CircleGeometry(0.68, this.lowQuality ? 18 : 32)
+            : new THREE.PlaneGeometry(sideWidth, sideHeight);
+          const topGeo = () => round
+            ? new THREE.RingGeometry(0.42, 0.72, this.lowQuality ? 18 : 32)
+            : new THREE.PlaneGeometry(floorWidth, floorHeight);
+          for (const z of zSlots) {
+            makePanel(panelGeo(), -5.92, 2.05, z, 0, Math.PI / 2);
+            makePanel(panelGeo(), 5.92, 2.05, z, 0, -Math.PI / 2);
+          }
+          for (const z of ceilingZSlots) {
+            makePanel(topGeo(), 0, 4.94, z, -Math.PI / 2, 0);
+          }
+          return;
+        }
+
         if (config.layout === 'editor') {
           const layout = this.getEditorPanelLayout(segLen);
           for (const z of layout.zSlots) {
@@ -1234,6 +1934,62 @@
         }
       }
 
+      addFloorStylePanels(group, segLen) {
+        if (this.tunnelStyle === 'basic') return;
+        const config = this.getTunnelStyleConfig();
+        const floorOpacity = Math.min(0.9, Math.max(0.24, config.panelOpacity * 0.82));
+        const panelMat = new THREE.MeshBasicMaterial({
+          color: config.panel,
+          transparent: true,
+          opacity: floorOpacity,
+          side: THREE.DoubleSide,
+          depthWrite: false
+        });
+        const makePanel = (geo, x, z, rotZ = 0) => {
+          const panel = new THREE.Mesh(geo, panelMat.clone());
+          panel.position.set(x, -0.935, z);
+          panel.rotation.set(Math.PI / 2, 0, rotZ);
+          panel.userData.baseOpacity = floorOpacity;
+          panel.userData.motionLayer = 'floorPattern';
+          group.add(panel);
+        };
+
+        if (config.layout === 'editor') {
+          const layout = this.getEditorPanelLayout(segLen);
+          for (const z of layout.zSlots) {
+            makePanel(this.createPanelGeometry(layout.shape, layout.width, layout.height), 0, z);
+          }
+          return;
+        }
+
+        if (String(config.layout).startsWith('direct')) {
+          const thin = config.layout === 'direct-thin';
+          const bold = config.layout === 'direct-bold';
+          const round = config.layout === 'direct-round';
+          const zSlots = this.lowQuality ? [-segLen * 0.24, segLen * 0.24] : [-segLen * 0.36, -segLen * 0.12, segLen * 0.12, segLen * 0.36];
+          const makeGeo = () => round
+            ? new THREE.RingGeometry(0.45, 0.78, this.lowQuality ? 18 : 32)
+            : new THREE.PlaneGeometry(bold ? 2.0 : thin ? 1.05 : 1.45, bold ? 0.96 : thin ? 0.56 : 0.72);
+          for (const z of zSlots) makePanel(makeGeo(), 0, z);
+          return;
+        }
+
+        const zSlots = this.lowQuality ? [-segLen * 0.24, segLen * 0.24] : [-segLen * 0.3, 0, segLen * 0.3];
+        const shape = config.shape === 'none' ? 'rect' : config.shape;
+        const makeGeo = () => {
+          if (config.layout === 'large') {
+            if (shape === 'circle') return new THREE.CircleGeometry(0.92, this.lowQuality ? 18 : 28);
+            if (shape === 'square') return new THREE.PlaneGeometry(1.36, 1.36);
+            return new THREE.PlaneGeometry(Math.min(2.8, segLen * 0.38), 1.05);
+          }
+          return this.createPanelGeometry(shape, Math.min(2.5, segLen * 0.32), 0.64);
+        };
+
+        for (const z of zSlots) {
+          makePanel(makeGeo(), 0, z);
+        }
+      }
+
       pickNextDrift() {
         this.driftTimer = 2.5 + Math.random() * 3.5;
         this.targetDriftX = (Math.random() * 2 - 1) * 0.72;
@@ -1265,6 +2021,7 @@
       updateSceneryAnimations(dt, speed) {
         this.sceneryAnimFrame++;
         const worldBlur = THREE.MathUtils.clamp((speed - 600) / 700, 0, 1);
+        const cosmicSmear = THREE.MathUtils.clamp((speed - 10000) / 290000, 0, 1);
         for (const seg of this.tunnelSegments) {
           for (let childIndex = 0; childIndex < seg.children.length; childIndex++) {
             const child = seg.children[childIndex];
@@ -1275,9 +2032,10 @@
               child.userData.baseScaleZ = child.scale.z;
             }
             if (!child.material.uniforms) {
-              child.scale.z = child.userData.baseScaleZ * (1 + worldBlur * 0.85);
+              child.scale.z = child.userData.baseScaleZ * (1 + worldBlur * 0.85 + cosmicSmear * 13.5);
+              if (child.userData.motionLayer === 'underlay') child.scale.x = child.userData.baseScaleX * (1 + cosmicSmear * 0.75);
               if (child.material.transparent && child.userData.baseOpacity !== undefined && child.userData.animType !== 'cityWindow') {
-                child.material.opacity = child.userData.baseOpacity * (1 - worldBlur * 0.18);
+                child.material.opacity = child.userData.baseOpacity * (1 - worldBlur * 0.18 + cosmicSmear * 0.22);
               }
             }
 
@@ -1313,8 +2071,6 @@
       }
 
       addRouteScenery(group, segLen, index) {
-        if (this.theme === 'basic') return;
-
         const zSlots = this.lowQuality ? [-segLen * 0.34, segLen * 0.26] : [-segLen * 0.42, -segLen * 0.16, segLen * 0.14, segLen * 0.4];
         const sideXs = [-8.15, 8.15];
         const skyDepth = segLen * 1.08;
@@ -1375,6 +2131,40 @@
         const addTopSky = (color, opacity = 1) => {
           addBox(23.5, 0.08, skyDepth, 0, 6.7, 0, color, opacity);
         };
+        const addUnderlay = (palette, heightScale = 1, backdropColor = palette[0]) => {
+          const style = TUNNEL_STYLE_CONFIGS[this.tunnelStyle] || TUNNEL_STYLE_CONFIGS.basic;
+          const floorCubes = style.floorCubes || 0;
+          const floorXs = [-4.8, -3.2, -1.6, 0, 1.6, 3.2, 4.8];
+          const backdrop = addBox(12.7, 0.08, skyDepth, 0, -1.62, 0, backdropColor, 0.9);
+          backdrop.userData.baseOpacity = backdrop.material.opacity;
+          backdrop.userData.motionLayer = 'underlay';
+          if (!floorCubes) return;
+          const activeZSlots = floorCubes < 1 ? zSlots.filter((_, slot) => slot % 2 === 0) : zSlots;
+          activeZSlots.forEach((z, slot) => {
+            floorXs.forEach((x, col) => {
+              const seed = index * 43 + slot * 13 + col * 5;
+              const color = palettePick(palette, seed);
+              const w = 0.42 + (seed % 4) * 0.16;
+              const h = (0.14 + (seed % 5) * 0.08) * heightScale;
+              const d = 0.58 + (seed % 3) * 0.22;
+              const y = -1.36 - (seed % 3) * 0.08 + h * 0.5;
+              const piece = addBox(w, h, d, x + ((seed % 3) - 1) * 0.12, y, z + ((seed % 5) - 2) * 0.08, color, 0.72);
+              piece.userData.baseOpacity = piece.material.opacity;
+              piece.userData.motionLayer = 'underlay';
+            });
+          });
+        };
+        if (BASIC_BIOME_CONFIGS[this.theme]) {
+          const basic = BASIC_BIOME_CONFIGS[this.theme];
+          addSkyPanels(basic.sky, basic.horizon, 1);
+          addTopSky(basic.sky, 1);
+          const backdrop = addBox(12.7, 0.08, skyDepth, 0, -1.62, 0, basic.floor, 0.96);
+          backdrop.userData.baseOpacity = backdrop.material.opacity;
+          backdrop.userData.motionLayer = 'underlay';
+          return;
+        }
+        if (this.theme === 'basic') return;
+
         const addCloud = (side, y, z, scale = 1, color = 0xf2f7ff, opacity = 0.58) => {
           const x = side + (side > 0 ? 1.45 : -1.45);
           const seed = index * 31 + Math.floor((z + 9) * 10) + (side > 0 ? 5 : 0);
@@ -1416,6 +2206,7 @@
         if (this.theme === 'forest') {
           addSkyPanels(0x75b7e8, 0x2d6a35, 1);
           addTopSky(0x75b7e8, 1);
+          addUnderlay([0x123f1f, 0x1c5d2d, 0x2f7a35, 0x5f8f2f, 0x3a1f0f], 1.05, 0x184f25);
           const leafColors = [0x0b5d28, 0x137a33, 0x1f8f42, 0x2faa50, 0x5f8f2f, 0x0f6f58];
           const trunkColors = [0x3a1f0f, 0x5a351d, 0x6f4424];
           for (const side of sideXs) {
@@ -1466,6 +2257,7 @@
         if (this.theme === 'mountains') {
           addSkyPanels(0x8fc4f2, 0x5d6e58, 1);
           addTopSky(0x8fc4f2, 1);
+          addUnderlay([0x38473f, 0x596474, 0x77716b, 0x9aa1aa, 0xe7f3ff], 1.45, 0x566454);
           const lowColors = [0x4d5e48, 0x596646, 0x6a6148, 0x425b50];
           const midColors = [0x6b7280, 0x596474, 0x77716b, 0x4f5b68];
           const snowColors = [0xe7f3ff, 0xcfdfff, 0xf5fbff];
@@ -1499,6 +2291,11 @@
           const buildingColors = this.cityIsNight ? [0x111827, 0x162238, 0x20243a, 0x0d1b2a] : [0x7c8797, 0x9aa5b1, 0x6f7d8d, 0xb0a394];
           addSkyPanels(skyColor, horizonColor, 1);
           addTopSky(skyColor, 1);
+          addUnderlay(
+            this.cityIsNight ? [0x0b1220, 0x162238, 0xffd66b, 0x7fd8ff, 0xff3355] : [0x6f7d8d, 0x9aa5b1, 0xd9f4ff, 0xb0a394],
+            1.25,
+            this.cityIsNight ? 0x0b1424 : 0x8fa0ab
+          );
           for (const side of sideXs) {
             zSlots.forEach((z, slot) => {
               const seed = index * 19 + slot * 11 + (side > 0 ? 4 : 0);
@@ -1551,12 +2348,12 @@
 
           this.addRouteScenery(group, segLen, i);
 
-          // Tunnel frame — 4 walls forming a rectangular tube
-          const wallGeo = new THREE.PlaneGeometry(12, segLen);
+          // Tunnel frame — side walls are clipped from floor to ceiling to avoid road-like leftovers.
+          const sideWallGeo = new THREE.PlaneGeometry(segLen, 6);
           const wallMat = new THREE.ShaderMaterial({
             uniforms: {
               uTime: { value: 0 }, uSpeed: { value: 0 },
-              uColor: { value: new THREE.Color(0x0a0a2e) },
+              uColor: { value: new THREE.Color(styleConfig.wallColor ?? 0x0a0a2e) },
               uAccent: { value: new THREE.Color(styleConfig.accent) },
               uIsBlackSquare: { value: 0.0 }
             },
@@ -1565,21 +2362,25 @@
           });
 
           // Left wall
-          const left = new THREE.Mesh(wallGeo, wallMat.clone());
+          const left = new THREE.Mesh(sideWallGeo, wallMat.clone());
           left.position.set(-6, 2, 0); left.rotation.y = Math.PI / 2;
-          left.material.uniforms.uIsBlackSquare.value = 1.0;
+          left.material.uniforms.uIsBlackSquare.value = styleConfig.wallMode ?? 1.0;
           group.add(left);
 
           // Right wall
-          const right = new THREE.Mesh(wallGeo, wallMat.clone());
+          const right = new THREE.Mesh(sideWallGeo, wallMat.clone());
           right.position.set(6, 2, 0); right.rotation.y = -Math.PI / 2;
-          right.material.uniforms.uIsBlackSquare.value = 1.0;
+          right.material.uniforms.uIsBlackSquare.value = styleConfig.wallMode ?? 1.0;
           group.add(right);
 
           // Ceiling
           const ceil = new THREE.Mesh(new THREE.PlaneGeometry(12, segLen), wallMat.clone());
           ceil.position.set(0, 5, 0); ceil.rotation.x = -Math.PI / 2;
-          if (this.theme !== 'basic' || hasSquareTunnel) {
+          if (String(styleConfig.layout).startsWith('direct')) {
+            ceil.material.uniforms.uColor.value = new THREE.Color(styleConfig.wallColor ?? styleConfig.floor);
+            ceil.material.uniforms.uAccent.value = new THREE.Color(styleConfig.topAccent);
+            ceil.material.uniforms.uIsBlackSquare.value = styleConfig.wallMode ?? 0.0;
+          } else if (this.theme !== 'basic' || hasSquareTunnel) {
             ceil.material.uniforms.uAccent.value = new THREE.Color(styleConfig.topAccent);
             ceil.material.uniforms.uIsBlackSquare.value = 1.0;
           } else {
@@ -1587,21 +2388,23 @@
           }
           group.add(ceil);
 
-          // Floor
-          const floor = new THREE.Mesh(
-            new THREE.PlaneGeometry(12, segLen),
-            new THREE.MeshBasicMaterial({ color: styleConfig.floor, side: THREE.DoubleSide })
-          );
+          // Transparent energy membrane replacing the old road surface.
+          const floor = new THREE.Mesh(new THREE.PlaneGeometry(12, segLen), wallMat.clone());
+          floor.material.uniforms.uColor.value = new THREE.Color(styleConfig.floor);
+          floor.material.uniforms.uAccent.value = new THREE.Color(styleConfig.accent);
+          floor.material.uniforms.uIsBlackSquare.value = -1.0;
           floor.position.set(0, -1, 0); floor.rotation.x = Math.PI / 2;
           group.add(floor);
+
+          this.addFloorStylePanels(group, segLen);
 
           this.addTunnelStylePanels(group, segLen);
 
           // Neon edge strips
           const stripGeo = new THREE.BoxGeometry(0.05, 0.05, segLen);
-          const stripMat = new THREE.MeshBasicMaterial({ color: styleConfig.accent });
           [[-6, 0], [6, 0], [-6, 4], [6, 4]].forEach(([x, y]) => {
-            const s = new THREE.Mesh(stripGeo, stripMat);
+            const stripColor = y === 0 ? styleConfig.floor : styleConfig.accent;
+            const s = new THREE.Mesh(stripGeo, new THREE.MeshBasicMaterial({ color: stripColor }));
             s.position.set(x, y, 0);
             group.add(s);
           });
@@ -1633,6 +2436,7 @@
       update(dt, speed, playerPos, playerBox) {
         // Update tunnel uniforms
         const worldBlur = THREE.MathUtils.clamp((speed - 600) / 700, 0, 1);
+        const cosmicSmear = THREE.MathUtils.clamp((speed - 10000) / 290000, 0, 1);
         for (const seg of this.tunnelSegments) {
           for (const child of seg.children) {
             if (child.material && child.material.uniforms) {
@@ -1644,9 +2448,10 @@
                 child.userData.baseScaleY = child.scale.y;
                 child.userData.baseScaleZ = child.scale.z;
               }
-              child.scale.z = child.userData.baseScaleZ * (1 + worldBlur * 0.85);
+              child.scale.z = child.userData.baseScaleZ * (1 + worldBlur * 0.85 + cosmicSmear * 13.5);
+              if (child.userData.motionLayer === 'underlay') child.scale.x = child.userData.baseScaleX * (1 + cosmicSmear * 0.75);
               if (child.material.transparent && child.userData.baseOpacity !== undefined && child.userData.animType !== 'cityWindow') {
-                child.material.opacity = child.userData.baseOpacity * (1 - worldBlur * 0.18);
+                child.material.opacity = child.userData.baseOpacity * (1 - worldBlur * 0.18 + cosmicSmear * 0.22);
               }
             }
 
@@ -1886,11 +2691,10 @@
       updateEngine(speed) {
         if (!this.engineSource) return;
         this.currentSpeed = speed;
-        // playbackRate: 0.1x at idle, scales with speed
-        // 300 km/h → 3x, 1000 km/h → 10x, 1200 km/h → 12x
-        const playbackRate = Math.max(0.1, speed / 100);
+        // Keep audio stable for ultra-speed craft; visuals carry the impossible velocity.
+        const playbackRate = Math.min(18, Math.max(0.1, speed / 100));
         this.engineSource.playbackRate.setTargetAtTime(playbackRate, this.getContext().currentTime, 0.05);
-        const r = speed / 300;
+        const r = Math.min(speed / 3000, 1);
         this.engineFilter.frequency.setTargetAtTime(200 + r * 800, this.getContext().currentTime, 0.05);
         this.engineGain.gain.setTargetAtTime(0.1 + r * 0.2, this.getContext().currentTime, 0.05);
       }
@@ -2627,6 +3431,105 @@
     }
 
     // ═══════════════════════════════════════════════
+    // ART CONCEPT GALLERY
+    // ═══════════════════════════════════════════════
+    class ArtConceptGallery {
+      constructor(sound) {
+        this.sound = sound;
+        this.panel = document.getElementById('art-panel');
+        this.tabs = document.getElementById('art-tabs');
+        this.image = document.getElementById('art-image');
+        this.caption = document.getElementById('art-caption');
+        this.wrap = document.getElementById('art-image-wrap');
+        this.categoryIndex = Math.max(0, ART_CONCEPT_GALLERIES.findIndex(gallery => gallery.id === 'vehicles'));
+        this.imageIndex = 0;
+        this.pointerStartX = null;
+        this.onBack = () => {};
+        this._buildTabs();
+        this._bind();
+        this.render();
+      }
+
+      _buildTabs() {
+        this.tabs.innerHTML = '';
+        ART_CONCEPT_GALLERIES.forEach((gallery, index) => {
+          const btn = document.createElement('button');
+          btn.className = 'art-tab';
+          btn.textContent = gallery.label;
+          btn.addEventListener('mouseenter', () => this.sound.playHover());
+          btn.addEventListener('click', () => {
+            this.sound.playClick();
+            this.categoryIndex = index;
+            this.imageIndex = 0;
+            this.render();
+          });
+          this.tabs.appendChild(btn);
+        });
+      }
+
+      _bind() {
+        document.getElementById('btn-art-prev').addEventListener('click', () => { this.sound.playClick(); this.move(-1); });
+        document.getElementById('btn-art-next').addEventListener('click', () => { this.sound.playClick(); this.move(1); });
+        document.getElementById('btn-art-back').addEventListener('mouseenter', () => this.sound.playHover());
+        document.getElementById('btn-art-back').addEventListener('click', () => {
+          this.sound.playClick();
+          this.hide();
+          this.onBack();
+        });
+        this.wrap.addEventListener('pointerdown', e => { this.pointerStartX = e.clientX; });
+        this.wrap.addEventListener('pointerup', e => {
+          if (this.pointerStartX === null) return;
+          const dx = e.clientX - this.pointerStartX;
+          this.pointerStartX = null;
+          if (Math.abs(dx) > 40) this.move(dx < 0 ? 1 : -1);
+        });
+        window.addEventListener('keydown', e => {
+          if (!this.isVisible()) return;
+          if (e.key === 'ArrowLeft') { e.preventDefault(); this.move(-1); }
+          if (e.key === 'ArrowRight') { e.preventDefault(); this.move(1); }
+          if (e.key === 'Escape') { e.preventDefault(); this.hide(); this.onBack(); }
+        });
+      }
+
+      isVisible() {
+        return this.panel.style.display === 'flex';
+      }
+
+      currentGallery() {
+        return ART_CONCEPT_GALLERIES[this.categoryIndex] || ART_CONCEPT_GALLERIES[0];
+      }
+
+      move(delta) {
+        const gallery = this.currentGallery();
+        if (!gallery.items.length) return;
+        this.imageIndex = (this.imageIndex + delta + gallery.items.length) % gallery.items.length;
+        this.render();
+      }
+
+      render() {
+        const gallery = this.currentGallery();
+        const item = gallery.items[this.imageIndex];
+        [...this.tabs.children].forEach((tab, index) => tab.classList.toggle('active', index === this.categoryIndex));
+        if (!item) {
+          this.image.removeAttribute('src');
+          this.caption.textContent = 'No images';
+          return;
+        }
+        this.image.src = encodeURI(item.src);
+        this.caption.textContent = `${gallery.label} / ${this.imageIndex + 1} of ${gallery.items.length}`;
+      }
+
+      show() {
+        this.panel.style.display = 'flex';
+        this.render();
+      }
+
+      hide() {
+        this.panel.style.display = 'none';
+      }
+    }
+
+    // ═══════════════════════════════════════════════
     // MENU
     // ═══════════════════════════════════════════════
     class Menu {
@@ -2736,11 +3639,12 @@
         this.menu = new Menu(this.sound);
         this.sound.syncMusicControls();
         this.shipSelection = new ShipSelection(this.sound);
+        this.artGallery = new ArtConceptGallery(this.sound);
 
         // Speed Test state
         this.speedTestMode = false;
         this.speedTestVehicle = null;
-        this.speedTestRoute = 'basic';
+        this.speedTestRoute = 'basic-white';
         this.speedTestTunnelStyle = 'basic';
         this.speedTestTunnelOptions = null;
         this.speedTestScore = 0;
@@ -2762,6 +3666,14 @@
         this.speedTestGhostDistance = 0;
         this.speedTestGhostAnnounced = false;
         this.speedTestFeedbackTimer = 0;
+        this.speedTestUnlockChecked = false;
+        this.speedTestPassedMilestones = new Set();
+        this.speedTestOscPhase = 0;
+        this.speedTestCoreTemp = 0;
+        this.speedTestGx = 0;
+        this.speedTestGy = 0;
+        this.speedTestLastX = 0;
+        this.speedTestLastSpeed = 0;
         this.tunnel = null;
 
         // State
@@ -2800,6 +3712,7 @@
         this.buildEnv();
         this.bindCallbacks();
         this.bindInput();
+        this.updateVisitorCounter();
         window.addEventListener('resize', () => this._resize());
       }
 
@@ -2884,6 +3797,17 @@
           this._hideTransientScreens();
           this.menu.showMain();
         });
+
+        const artBtn = document.getElementById('btn-art-concept');
+        artBtn.addEventListener('mouseenter', () => this.sound.playHover());
+        artBtn.addEventListener('click', () => {
+          this.sound.playClick();
+          this.showArtConcepts();
+        });
+        this.artGallery.onBack = () => {
+          this._hideTransientScreens();
+          this.menu.showMain();
+        };
 
         const speedSave = document.getElementById('btn-speedtest-save');
         speedSave.addEventListener('mouseenter', () => this.sound.playHover());
@@ -3003,9 +3927,29 @@
         this.hud.hideGameOver();
         this._hideSpeedTestHUD();
         this.shipSelection.hide();
+        this.artGallery.hide();
         this.menu.hideAll();
         this.leaderboardPanel.style.display = 'flex';
         await this.renderLeaderboard();
+      }
+
+      showArtConcepts() {
+        this._clearInputState();
+        this.hud.hideGameOver();
+        this._hideSpeedTestHUD();
+        this.shipSelection.hide();
+        this.leaderboardPanel.style.display = 'none';
+        this.menu.hideAll();
+        this.artGallery.show();
+      }
+
+      async updateVisitorCounter() {
+        const el = document.getElementById('visitor-counter');
+        if (!el) return;
+        el.textContent = 'Visitors: ...';
+        const result = await VisitorClient.count();
+        el.textContent = `Visitors: ${result.visitors}`;
+        if (result.localOnly) el.title = 'Local fallback. True unique IP count needs /api/visitors on the public backend.';
       }
 
       async renderLeaderboard() {
@@ -3153,6 +4097,7 @@
         this._hideSpeedTestHUD();
         this.shipSelection.hide();
         if (this.leaderboardPanel) this.leaderboardPanel.style.display = 'none';
+        if (this.artGallery) this.artGallery.hide();
         if (this.saveScoreStatus) this.saveScoreStatus.textContent = '';
         const feedback = document.getElementById('speedtest-perfect');
         if (feedback) feedback.style.opacity = 0;
@@ -3640,16 +4585,21 @@
         document.getElementById('speedtest-hud').style.display = 'block';
         document.getElementById('speedtest-topbar').style.display = 'block';
         document.getElementById('btn-speedtest-save').style.display = 'none';
+        document.getElementById('speedtest-left-instruments').style.display = 'block';
+        document.getElementById('speedtest-core-temp').style.display = 'block';
       }
       _hideSpeedTestHUD() {
         document.getElementById('speedtest-hud').style.display = 'none';
         document.getElementById('speedtest-topbar').style.display = 'none';
         document.getElementById('btn-speedtest-save').style.display = 'none';
+        document.getElementById('speedtest-left-instruments').style.display = 'none';
+        document.getElementById('speedtest-core-temp').style.display = 'none';
         document.body.classList.remove('speedtest-light');
       }
       _updateSpeedTestHUD() {
         const tunnelLabel = TUNNEL_STYLE_LABELS[this.speedTestTunnelStyle] || 'BASIC';
-        document.getElementById('speedtest-shipname').textContent = `${this.speedTestVehicle.name} / ${this.speedTestRoute} / ${tunnelLabel}`;
+        const routeLabel = SPEED_TEST_ROUTE_LABELS[this.speedTestRoute] || this.speedTestRoute;
+        document.getElementById('speedtest-shipname').textContent = `${this.speedTestVehicle.name} / ${routeLabel} / ${tunnelLabel}`;
         document.getElementById('speedtest-speed').textContent = Math.round(this.player.speed);
         document.getElementById('speedtest-distance').textContent = `DISTANCE: ${Math.round(this.speedTestDistance)}m`;
         document.getElementById('speedtest-score').textContent = `SCORE: ${this.speedTestScore}`;
@@ -3674,8 +4624,24 @@
         this.speedTestGasPressed = false;
         this.speedTestGhostAnnounced = false;
         this.speedTestFeedbackTimer = 0;
+        this.speedTestUnlockChecked = false;
+        this.speedTestPassedMilestones = new Set();
+        this.speedTestOscPhase = 0;
+        this.speedTestCoreTemp = 0;
+        this.speedTestGx = 0;
+        this.speedTestGy = 0;
+        this.speedTestLastX = 0;
+        this.speedTestLastSpeed = 0;
         document.getElementById('speedtest-warning').textContent = '';
         document.getElementById('speedtest-perfect').style.opacity = 0;
+        const tempFill = document.getElementById('core-temp-fill');
+        const tempValue = document.getElementById('core-temp-value');
+        const gValue = document.getElementById('gforce-value');
+        const gDot = document.getElementById('gforce-dot');
+        if (tempFill) tempFill.style.height = '0%';
+        if (tempValue) tempValue.textContent = '0%';
+        if (gValue) gValue.textContent = '0.0G';
+        if (gDot) gDot.style.transform = 'translate(0px, 0px)';
       }
 
       _speedTestScoreMultiplier() {
@@ -3690,11 +4656,131 @@
         if (label) this._showSpeedTestFeedback(`${label} +${points}`);
       }
 
-      _showSpeedTestFeedback(text) {
+      _showSpeedTestFeedback(text, duration = 0.9) {
         const el = document.getElementById('speedtest-perfect');
         el.textContent = text;
         el.style.opacity = 1;
-        this.speedTestFeedbackTimer = 0.9;
+        this.speedTestFeedbackTimer = duration;
+      }
+
+      _updateSpeedTestMilestones() {
+        for (const milestone of SPEED_TEST_MILESTONES) {
+          if (this.player.speed < milestone.speed || this.speedTestPassedMilestones.has(milestone.speed)) continue;
+          if (milestone.speed > this.speedTestVehicle.maxSpeed) continue;
+          this.speedTestPassedMilestones.add(milestone.speed);
+          const speedText = milestone.speed.toLocaleString('pl-PL');
+          this._showSpeedTestFeedback(`${milestone.text} - ${speedText} km/h`, 3);
+          this.particles.emitExplosion(
+            this.player.getNosePos(),
+            new THREE.Color(milestone.speed >= 300000 ? 0xffffff : 0x00e5ff),
+            milestone.speed >= 300000 ? 90 : 42
+          );
+          break;
+        }
+      }
+
+      _updateSpeedTestVehicleUnlocks() {
+        if (this.speedTestUnlockChecked || !this.speedTestVehicle) return;
+        if (this.player.speed < this.speedTestVehicle.maxSpeed * 0.9) return;
+        this.speedTestUnlockChecked = true;
+        const unlocked = VehicleUnlocks.unlockNextAfter(this.speedTestVehicle);
+        if (!unlocked) return;
+        this._showSpeedTestFeedback('Nev vehicle Unlocked!!!', 3);
+        this.particles.emitExplosion(this.player.getNosePos(), new THREE.Color(0xffc800), 64);
+      }
+
+      _speedTestVisualTravelSpeed(speed) {
+        if (speed <= 2500) return speed * 0.5;
+        const cosmic = THREE.MathUtils.clamp((speed - 2500) / 297500, 0, 1);
+        return 1250 + Math.pow(cosmic, 0.62) * 950;
+      }
+
+      _drawSpeedTestOscilloscope(dt, speedRatio, gLoad) {
+        const canvas = document.getElementById('speedtest-oscilloscope');
+        const ctx = canvas?.getContext?.('2d');
+        if (!ctx) return;
+        const w = canvas.width;
+        const h = canvas.height;
+        this.speedTestOscPhase += dt * (2.6 + speedRatio * 11);
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = 'rgba(0, 8, 18, 0.34)';
+        ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = 'rgba(0, 229, 255, 0.12)';
+        ctx.lineWidth = 1;
+        for (let y = 14; y < h; y += 18) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(w, y);
+          ctx.stroke();
+        }
+        ctx.strokeStyle = 'rgba(0, 229, 255, 0.18)';
+        ctx.beginPath();
+        ctx.moveTo(w * 0.5, 0);
+        ctx.lineTo(w * 0.5, h);
+        ctx.stroke();
+
+        const amp = w * (0.18 + speedRatio * 0.22 + Math.min(0.18, gLoad * 0.05));
+        const freq = 0.16 + speedRatio * 0.08;
+        const heat = THREE.MathUtils.clamp(this.speedTestCoreTemp / 100, 0, 1);
+        ctx.strokeStyle = heat > 0.72 ? '#ffcc00' : '#00e5ff';
+        ctx.lineWidth = 2;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = ctx.strokeStyle;
+        ctx.beginPath();
+        for (let y = 0; y <= h; y++) {
+          const wave = Math.sin(y * freq + this.speedTestOscPhase) + Math.sin(y * freq * 0.43 - this.speedTestOscPhase * 1.7) * 0.32;
+          const x = w * 0.5 + wave * amp;
+          if (y === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      _updateSpeedTestInstruments(dt) {
+        const speed = this.player.speed;
+        const maxSpeed = Math.max(1, this.speedTestVehicle?.maxSpeed || 1);
+        const speedRatio = THREE.MathUtils.clamp(speed / maxSpeed, 0, 1);
+        const safeDt = Math.max(dt, 0.001);
+        const lateralVelocity = (this.player.currentX - this.speedTestLastX) / safeDt;
+        const speedDelta = (speed - this.speedTestLastSpeed) / maxSpeed / safeDt;
+        const laneLoad = (this.speedTestTargetX - this.player.currentX) / 4;
+        const targetGx = THREE.MathUtils.clamp((laneLoad * 1.25 + lateralVelocity * 0.045) * (0.25 + speedRatio * 1.45), -1.15, 1.15);
+        const targetGy = THREE.MathUtils.clamp(speedDelta * 2.2 + (this.speedTestGasPressed ? speedRatio * 0.18 : -0.08), -0.75, 0.95);
+        const blend = Math.min(1, dt * 7);
+        this.speedTestGx = THREE.MathUtils.lerp(this.speedTestGx, targetGx, blend);
+        this.speedTestGy = THREE.MathUtils.lerp(this.speedTestGy, targetGy, blend);
+        this.speedTestLastX = this.player.currentX;
+        this.speedTestLastSpeed = speed;
+
+        const gDot = document.getElementById('gforce-dot');
+        const gMeter = document.getElementById('gforce-meter');
+        const gValue = document.getElementById('gforce-value');
+        const gLoad = Math.sqrt(this.speedTestGx * this.speedTestGx + this.speedTestGy * this.speedTestGy) * 3.2;
+        if (gDot && gMeter) {
+          const radius = Math.max(12, gMeter.clientWidth * 0.5 - 8);
+          const dx = THREE.MathUtils.clamp(this.speedTestGx, -1, 1) * radius;
+          const dy = THREE.MathUtils.clamp(-this.speedTestGy, -1, 1) * radius;
+          gDot.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`;
+        }
+        if (gValue) gValue.textContent = `${gLoad.toFixed(1)}G`;
+
+        const heatTarget = THREE.MathUtils.clamp(
+          Math.pow(speedRatio, 1.08) * 82 + (this.speedTestOverdriveActive ? 16 : 0) + Math.max(0, (speed - 10000) / 290000) * 18,
+          0,
+          100
+        );
+        this.speedTestCoreTemp = THREE.MathUtils.lerp(this.speedTestCoreTemp, heatTarget, Math.min(1, dt * 2.2));
+        const tempFill = document.getElementById('core-temp-fill');
+        const tempValue = document.getElementById('core-temp-value');
+        const temp = Math.round(this.speedTestCoreTemp);
+        if (tempFill) {
+          tempFill.style.height = `${temp}%`;
+          tempFill.style.filter = temp > 82 ? 'saturate(1.5) brightness(1.12)' : 'none';
+        }
+        if (tempValue) tempValue.textContent = `${temp}%`;
+
+        this._drawSpeedTestOscilloscope(dt, speedRatio, gLoad);
       }
 
       _updateSpeedTestSystems(dt) {
@@ -3746,6 +4832,8 @@
         else warning.textContent = '';
 
         this.speedTestMultiplier = this._speedTestScoreMultiplier();
+        this._updateSpeedTestMilestones();
+        this._updateSpeedTestVehicleUnlocks();
 
         if (this.speedTestFeedbackTimer > 0) {
           this.speedTestFeedbackTimer -= dt;
@@ -3763,7 +4851,6 @@
         ];
         const pattern = patterns[Math.floor(Math.random() * patterns.length)];
         pattern.forEach((lane, i) => this.obstacles.spawn(lane, -80 - i * 28));
-        this._showSpeedTestFeedback('PATTERN INBOUND');
       }
 
       _createSpeedTestGhost() {
@@ -3809,7 +4896,7 @@
         this._hideTransientScreens();
         this.speedTestMode = true;
         this.speedTestVehicle = vehicle;
-        this.speedTestRoute = ['basic', 'forest', 'mountains', 'city'].includes(route) ? route : 'basic';
+        this.speedTestRoute = SPEED_TEST_ROUTES.includes(route) ? route : 'basic-white';
         this.speedTestTunnelStyle = TUNNEL_STYLE_CONFIGS[tunnelStyle] ? tunnelStyle : 'basic';
         this.speedTestTunnelOptions = this.speedTestTunnelStyle === 'editor' ? tunnelOptions : null;
         this.speedTestScore = 0;
@@ -3819,6 +4906,8 @@
         this._resetSpeedTestSystems();
         this.player.currentX = 0;
         this.player.speed = 0;
+        this.speedTestLastX = this.player.currentX;
+        this.speedTestLastSpeed = this.player.speed;
         this.applyVehicleMesh(vehicle);
         this.player.mesh.position.set(0, 0.5, 5);
         this.player.mesh.visible = true;
@@ -3840,9 +4929,11 @@
         // Build tunnel
         const tunnelQuality = this.isTouchDevice || this.renderResolution === 'mobile720' ? 'mobile' : 'high';
         this.tunnel = new TunnelEnvironment(this.scene, this.speedTestRoute, tunnelQuality, this.speedTestTunnelStyle, this.speedTestTunnelOptions);
+        const brightBasic = this.speedTestRoute === 'basic-white' || this.speedTestRoute === 'basic-desert';
+        const directTunnel = String(this.speedTestTunnelStyle).startsWith('direct-concept');
         document.body.classList.toggle(
           'speedtest-light',
-          this.speedTestRoute === 'forest' || this.speedTestRoute === 'mountains' || (this.speedTestRoute === 'city' && !this.tunnel.cityIsNight)
+          brightBasic || directTunnel || this.speedTestRoute === 'forest' || this.speedTestRoute === 'mountains' || (this.speedTestRoute === 'city' && !this.tunnel.cityIsNight)
         );
         this.tunnel.buildTunnel(300, tunnelQuality === 'mobile' ? 16 : 30);
         this._createSpeedTestGhost();
@@ -3986,7 +5077,75 @@
         let engineZ = 1.25;
         let noseZ = -1.35;
 
-        if (vehicle.type === 'rocket') {
+        if (vehicle.type === 'cosmic') {
+          const n = vehicle.variant ?? (vehicle.id - 32);
+          const family = n % 10;
+          const length = 2.0 + (n % 6) * 0.18;
+          const span = 1.25 + (n % 8) * 0.18;
+          engineZ = length * 0.5;
+          noseZ = -length * 0.62;
+
+          if (family === 0) {
+            addSphere(0.44, 0, 0.02, -0.05, bodyColor, { material: { wireframe: true }, scale: [1.55, 0.24, 2.25] });
+            addSphere(0.26, 0, 0.16, -0.34, accentColor, { material: { transparent: true, opacity: 0.52 }, scale: [1.25, 0.28, 1.05] });
+            addCylinder(0.78, 0.78, 0.055, 0, 0.01, 0.08, accentColor, { axis: 'y', segments: 24, material: { wireframe: true } });
+            [-0.46, 0.46].forEach(x => addCylinder(0.075, 0.09, 0.72, x, -0.08, 0.38, bodyHighlight, { axis: 'z', segments: 8, material: { wireframe: true } }));
+          } else if (family === 1) {
+            addCone(0.26, length * 1.12, 0, 0, -0.08, bodyColor, { segments: 5, material: { wireframe: true } });
+            addBox(span, 0.035, 0.34, 0, -0.02, 0.04, accentColor, { wireframe: true, rot: [0, 0.45, 0] });
+            addBox(span * 0.72, 0.035, 0.28, 0, 0.04, 0.52, bodyHighlight, { wireframe: true, rot: [0, -0.42, 0] });
+            addSphere(0.18, 0, 0.16, -0.56, 0x0b3550, { material: { transparent: true, opacity: 0.72 }, scale: [0.95, 0.34, 1.35] });
+          } else if (family === 2) {
+            addBox(0.42, 0.2, length, 0, 0, -0.02, bodyColor, { wireframe: true, rot: [0, 0, 0.78] });
+            addBox(0.08, 0.58, length * 0.72, -0.42, 0.02, 0.08, accentColor, { wireframe: true, rot: [0, 0, -0.28] });
+            addBox(0.08, 0.58, length * 0.72, 0.42, 0.02, 0.08, accentColor, { wireframe: true, rot: [0, 0, 0.28] });
+            addCone(0.18, 0.72, 0, 0, noseZ, bodyHighlight, { segments: 4, material: { wireframe: true } });
+          } else if (family === 3) {
+            addCylinder(0.18, 0.28, length, 0, 0, -0.02, bodyColor, { axis: 'z', segments: 12, material: { wireframe: true } });
+            addCylinder(0.72, 0.72, 0.035, 0, 0.04, -0.18, accentColor, { axis: 'y', segments: 28, material: { wireframe: true, transparent: true, opacity: 0.72 } });
+            addCylinder(0.52, 0.52, 0.035, 0, -0.04, 0.42, bodyHighlight, { axis: 'y', segments: 24, material: { wireframe: true, transparent: true, opacity: 0.62 } });
+            addSphere(0.16, 0, 0.18, -0.62, 0x0b3550, { material: { transparent: true, opacity: 0.74 }, scale: [1, 0.36, 1.3] });
+          } else if (family === 4) {
+            addBox(0.32, 0.16, length * 0.9, 0, 0, 0, bodyColor, { wireframe: true });
+            for (let i = 0; i < 4; i++) {
+              const a = i * Math.PI / 2 + 0.32;
+              addBox(0.08, span * 0.5, 0.42, Math.cos(a) * 0.38, Math.sin(a) * 0.16, 0.08, accentColor, { wireframe: true, rot: [0, 0, a] });
+            }
+            addCone(0.16, 0.86, 0, 0, noseZ, bodyHighlight, { segments: 6, material: { wireframe: true } });
+          } else if (family === 5) {
+            addSphere(0.34, 0, 0.02, -0.12, bodyColor, { material: { wireframe: true }, scale: [0.9, 0.42, 2.55] });
+            addCylinder(0.1, 0.14, length * 0.76, -0.56, 0, 0.18, accentColor, { axis: 'z', segments: 8, material: { wireframe: true } });
+            addCylinder(0.1, 0.14, length * 0.76, 0.56, 0, 0.18, accentColor, { axis: 'z', segments: 8, material: { wireframe: true } });
+            addBox(span, 0.03, 0.22, 0, -0.06, -0.18, bodyHighlight, { wireframe: true });
+            addBox(span * 0.5, 0.03, 0.24, 0, 0.13, 0.72, bodyShadow, { wireframe: true });
+          } else if (family === 6) {
+            addCone(0.34, length, 0, 0, -0.04, bodyColor, { segments: 3, material: { wireframe: true } });
+            addCone(0.2, length * 0.82, -0.36, -0.02, 0.08, accentColor, { segments: 3, material: { wireframe: true, transparent: true, opacity: 0.72 }, rot: [0, 0, -0.1] });
+            addCone(0.2, length * 0.82, 0.36, -0.02, 0.08, accentColor, { segments: 3, material: { wireframe: true, transparent: true, opacity: 0.72 }, rot: [0, 0, 0.1] });
+            addSphere(0.13, 0, 0.16, -0.5, 0x0b3550, { material: { transparent: true, opacity: 0.7 }, scale: [1, 0.34, 1.45] });
+          } else if (family === 7) {
+            addBox(0.18, 0.18, length * 1.05, 0, 0, -0.04, bodyColor, { wireframe: true });
+            for (let i = 0; i < 5; i++) {
+              const x = (i - 2) * 0.22;
+              addBox(0.06, 0.36 + (i % 2) * 0.18, 0.24, x, 0.02, -0.52 + i * 0.28, i % 2 ? accentColor : bodyHighlight, { wireframe: true, rot: [0, 0, (i - 2) * 0.12] });
+            }
+            addCone(0.15, 0.72, 0, 0, noseZ, accentColor, { segments: 8, material: { wireframe: true } });
+          } else if (family === 8) {
+            addCylinder(0.24, 0.2, length, 0, 0, 0, bodyColor, { axis: 'z', segments: 6, material: { wireframe: true } });
+            addBox(span * 0.72, 0.035, 0.86, 0, -0.02, -0.08, accentColor, { wireframe: true, rot: [0, 0.65, 0] });
+            addBox(span * 0.72, 0.035, 0.86, 0, 0.05, 0.16, bodyHighlight, { wireframe: true, rot: [0, -0.65, 0] });
+            addSphere(0.19, 0, 0.17, -0.64, 0x0b3550, { material: { transparent: true, opacity: 0.72 }, scale: [0.82, 0.32, 1.5] });
+          } else {
+            addSphere(0.28, 0, 0.02, -0.12, bodyColor, { material: { wireframe: true }, scale: [1.2, 0.34, 2.2] });
+            addCylinder(0.5, 0.2, 0.9, -0.48, -0.02, 0.24, accentColor, { axis: 'z', segments: 7, material: { wireframe: true } });
+            addCylinder(0.2, 0.5, 0.9, 0.48, -0.02, 0.24, accentColor, { axis: 'z', segments: 7, material: { wireframe: true } });
+            addBox(0.08, 0.72, 0.36, 0, 0.18, engineZ - 0.12, bodyHighlight, { wireframe: true });
+          }
+
+          addLight(0.06, 0.04, 0.05, -span * 0.36, 0.03, -0.34, accentColor, 0.84);
+          addLight(0.06, 0.04, 0.05, span * 0.36, 0.03, -0.34, bodyHighlight, 0.78);
+          if (n % 3 === 0) addCylinder(0.08, 0.08, 0.9, 0, -0.05, 0.54, accentColor, { axis: 'z', segments: 12, material: { transparent: true, opacity: 0.45 } });
+        } else if (vehicle.type === 'rocket') {
           const n = vehicle.id;
           const radius = 0.22 + (n % 4) * 0.035;
           const length = 2.25 + (n % 5) * 0.14;
@@ -4194,7 +5353,7 @@
           this.speedTestDistance += this.player.speed * dt * 0.5;
 
           // Move tunnel segments TOWARD the player (positive Z) based on speed
-          const tunnelSpeed = this.player.speed * 0.5;
+          const tunnelSpeed = this._speedTestVisualTravelSpeed(this.player.speed);
           for (const seg of this.tunnel.tunnelSegments) {
             seg.position.z += tunnelSpeed * dt;
             // Update uniforms
@@ -4210,7 +5369,7 @@
               }
             }
             // Loop: when segment passes the camera, move it far back into the distance
-            if (seg.position.z > 20) {
+            while (seg.position.z > 20) {
               seg.position.z -= this.tunnel.tunnelSegments.length * (300 / this.tunnel.tunnelSegments.length);
             }
           }
@@ -4271,9 +5430,10 @@
 
           this._updateSpeedTestSystems(dt);
           this._updateSpeedTestGhost(dt);
+          this._updateSpeedTestInstruments(dt);
 
           // Update obstacles (rare spawns)
-          this.obstacles.update(dt, this.player.speed, 5, 1.0, false);
+          this.obstacles.update(dt, Math.min(this.player.speed, 3000), 5, 1.0, false);
           this.obstacles.checkCollisions();
 
           // Particles
